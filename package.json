@@ -1,0 +1,24 @@
+{
+  "name": "couchadmin",
+  "version": "1.0.0",
+  "description": "A tool to manage your CouchDB cluster",
+  "main": "index.js",
+  "scripts": {
+    "transpile": "babel src -d lib",
+    "prepublish": "npm run transpile",
+    "test": "lab -v --transform node_modules/lab-babel -t 100 "
+  },
+  "author": "Robert Kowalski <rok@kowalski.gd>",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "babel": "~5.0.8",
+    "bluebird": "~2.9.24",
+    "npmlog": "~1.2.0",
+    "request": "~2.55.0",
+    "valid-url": "~1.0.9"
+  },
+  "devDependencies": {
+    "lab": "~5.5.1",
+    "lab-babel": "~1.0.0"
+  }
+}
