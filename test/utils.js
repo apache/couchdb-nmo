@@ -24,54 +24,25 @@ lab.experiment('utils: uri', () => {
   });
 });
 
-lab.experiment('utils: node onlinestatus', () => {
+lab.experiment('utils: checkUrl', () => {
 
-  let server;
-
-  lab.before((done) => {
-    server = common.createTestServer(done);
+  lab.test('valid uri', (done) => {
+    assert.ok(utils.checkUrl() instanceof Error);
+    done();
   });
 
-  lab.after((done) => {
-    server.close(done);
+
+  lab.test('invalid url', (done) => {
+    assert.ok(utils.checkUrl('blubb') instanceof Error);
+    done();
   });
 
-  lab.test('returns error on no value provided', (done) => {
-    utils
-      .isNodeOnline()
-      .catch((err) => {
-        assert.ok(err instanceof Error);
-        done();
-      });
-  });
-
-  lab.test('returns error for all other errors', (done) => {
-    utils
-      .isNodeOnline({})
-      .catch((err) => {
-        assert.ok(err instanceof Error);
-        done();
-      });
-  });
-
-  lab.test('returns false for down site', (done) => {
-    utils
-      .isNodeOnline('http://127.0.0.1:65516')
-      .then((res) => {
-        assert.equal(res, false);
-        done();
-      });
-  });
-
-  lab.test('returns true for online site', (done) => {
-    utils
-      .isNodeOnline(common.NODE)
-      .then((res) => {
-        assert.equal(res, true);
-        done();
-      });
+  lab.test('valid url', (done) => {
+    assert.equal(utils.checkUrl('https://example.com:8000'), null);
+    done();
   });
 });
+
 
 lab.experiment('utils: send json to node', () => {
 

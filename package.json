@@ -6,7 +6,7 @@
   "scripts": {
     "transpile": "babel src -d lib",
     "prepublish": "npm run transpile",
-    "test": "lab -v --transform node_modules/lab-babel -t 100 "
+    "test": "lab -v --transform node_modules/lab-babel -t 100 -S"
   },
   "author": "Robert Kowalski <rok@kowalski.gd>",
   "license": "Apache 2.0",

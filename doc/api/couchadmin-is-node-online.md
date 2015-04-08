@@ -1,9 +1,9 @@
-# isNodeOnline
-
+couchadmin-is-node-online(3) - check if a cluster node is online
+================================================================
 
 ### SYNOPSIS
 
-    couchadmin.commands.isNodeOnline(url)
+    couchadmin.commands.isnodeonline(url)
 
 
 ### DESCRIPTION
