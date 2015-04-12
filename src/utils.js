@@ -22,7 +22,7 @@ export function checkUrl (url) {
 }
 
 export function sendJsonToNode (url, json) {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     assert.equal(typeof json, 'object', 'argument must be an object');
 
     log.http('request', 'POST', url);
