@@ -11,7 +11,7 @@
   "author": "Robert Kowalski <rok@kowalski.gd>",
   "license": "Apache 2.0",
   "dependencies": {
-    "babel": "~5.0.8",
+    "babel": "^5.1.10",
     "bluebird": "~2.9.24",
     "npmlog": "~1.2.0",
     "request": "~2.55.0",
