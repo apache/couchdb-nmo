@@ -3,16 +3,16 @@ couchadmin-is-online(3) - check if a cluster node is online
 
 ### SYNOPSIS
 
-    couchadmin.commands.isonline(urls, opts)
+    couchadmin.commands.isonline(url, [url], ..., opts)
 
 
 ### DESCRIPTION
 
 Check if nodes are online / available on the current network.
 
-The command takes two arguments: `urls` - the urls of the nodes to
-check as an `Array`. The second argument must be an `Object` providing
-options
+The command takes multiple url arguments for checking multiple nodes
+at once. The url must be a `String`. The last argument must be an
+`Object` providing options.
 
 The command returns a promise which will return an `Object` where the
 keys are the provided urls and the values have the type `Boolean`.

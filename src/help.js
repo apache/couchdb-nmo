@@ -1,4 +1,4 @@
-import {couchadmin} from './couchadmin.js';
+import couchadmin from './couchadmin.js';
 import Promise from 'bluebird';
 
 function getMainHelpText (cmds) {
@@ -19,7 +19,7 @@ couchadmin help <command>
 
 
 export default function help () {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     const cmds = Object.keys(couchadmin.commands).join(', ');
 
     console.log(getMainHelpText(cmds));

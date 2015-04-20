@@ -3,16 +3,22 @@ import log from 'npmlog';
 import request from 'request';
 import Promise from 'bluebird';
 import assert from 'assert';
+import xtend from 'xtend';
 
 export default isonline;
 
-function isonline (urls, opts = {silent: false, json: false}) {
-  return new Promise((resolve, reject) => {
-    if (!Array.isArray(urls)) {
-      urls = [urls];
-    }
+function isonline (...args) {
+  let opts = {silent: false, json: false};
+  if (typeof args[args.length - 1] === 'object') {
+    opts = xtend(opts, args.pop());
+  }
 
-    const urlPromises = urls.map((url) => {
+  return new Promise((resolve, reject) => {
+    if (!args.length) {
+      const err = new Error('Please enter an url.');
+      return reject(er);
+    }
+    const urlPromises = args.map((url) => {
       return isNodeOnline(url);
     });
 

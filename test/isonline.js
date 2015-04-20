@@ -7,12 +7,14 @@ import log from 'npmlog';
 
 
 export let lab = Lab.script();
+const oldConsole = console.log;
 
 lab.experiment('isonline', () => {
 
   let servers;
 
   lab.beforeEach((done) => {
+    console.log = oldConsole;
     common.createTestServers().done((s) => {
       servers = s;
       done();
@@ -75,7 +77,23 @@ lab.experiment('isonline', () => {
   });
 
   lab.test('accepts multiple sites', (done) => {
-    isonline([common.NODE, common.NODE_TWO])
+    isonline(common.NODE, common.NODE_TWO)
+      .then((res) => {
+        assert.deepEqual(res, {[common.NODE]: true, [common.NODE_TWO]: true});
+        done();
+      });
+  });
+
+  lab.test('accepts multiple sites and options', (done) => {
+    const oldConsole = console.log;
+    console.log = (...args) => {
+      assert.deepEqual({
+        'http://127.0.0.1:1337': true,
+        'http://127.0.0.1:1338': true
+      }, args[0]);
+      return oldConsole.apply(oldConsole, args);
+    };
+    isonline(common.NODE, common.NODE_TWO, {json: true})
       .then((res) => {
         assert.deepEqual(res, {[common.NODE]: true, [common.NODE_TWO]: true});
         done();
@@ -118,7 +136,6 @@ lab.experiment('isonline', () => {
 
     isonline(common.NODE, {silent: false, json: true})
       .then((res) => {
-        console.log = oldConsole;
         done();
       });
   });
@@ -139,7 +156,6 @@ lab.experiment('isonline', () => {
 
   lab.test('if silent output is selected, colored output is not provided', (done) => {
 
-    const oldConsole = console.log;
     console.log = (...args) => {
       throw new Error('fail');
       return oldConsole.apply(oldConsole, args);
