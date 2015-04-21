@@ -6,34 +6,34 @@ const commands = [
   'config'
 ];
 
-const couchadmin = {
+const nemo = {
   config: null
 };
 
-Object.defineProperty(couchadmin, 'commands', {
+Object.defineProperty(nemo, 'commands', {
   get: () => {
-    if (couchadmin.config === null) {
-      throw new Error('run couchadmin.load before');
+    if (nemo.config === null) {
+      throw new Error('run nemo.load before');
     }
     return commandFuncs;
   }
 });
 
 const commandFuncs = {};
-couchadmin.load = function load () {
+nemo.load = function load () {
   return new Promise((resolve, reject) => {
     config.load()
       .then((config) => {
 
-        couchadmin.config = config;
+        nemo.config = config;
 
         commands.forEach((cmd) => {
           commandFuncs[cmd] = require('./' + cmd + '.js');
         });
 
-        resolve(couchadmin);
+        resolve(nemo);
     });
   });
 };
 
-export default couchadmin;
+export default nemo;

@@ -1,6 +1,6 @@
-# couchadmin
+# nemo
 
-`couchadmin` is a cli tool to manage CouchDB Clusters and nodes in a
+`nemo` is a cli tool to manage CouchDB Clusters and nodes in a
 cluster.
 
 ## Contributing

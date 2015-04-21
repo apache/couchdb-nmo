@@ -1,11 +1,11 @@
-import couchadmin from './couchadmin.js';
+import nemo from './nemo.js';
 import Promise from 'bluebird';
 
 function getMainHelpText (cmds) {
   return `
 Usage:
 
-couchadmin <command>
+nemo <command>
 
 Available Commands:
 
@@ -13,14 +13,14 @@ ${cmds}
 
 Get help for a command:
 
-couchadmin help <command>
+nemo help <command>
 `;
 }
 
 
 export default function help () {
   return new Promise((resolve, reject) => {
-    const cmds = Object.keys(couchadmin.commands).join(', ');
+    const cmds = Object.keys(nemo.commands).join(', ');
 
     console.log(getMainHelpText(cmds));
 

@@ -1,5 +1,5 @@
 {
-  "name": "couchadmin",
+  "name": "nemo",
   "version": "1.0.0",
   "description": "A tool to manage your CouchDB cluster",
   "main": "index.js",

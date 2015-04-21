@@ -3,14 +3,14 @@ import assert from 'assert';
 import Lab from 'lab';
 export const lab = Lab.script();
 
-import couchadmin from '../src/couchadmin.js';
+import nemo from '../src/nemo.js';
 
-lab.experiment('couchadmin', () => {
+lab.experiment('nemo', () => {
 
   lab.test('throws if not config not loaded', (done) => {
     assert.throws(
       function () {
-        couchadmin.commands.help();
+        nemo.commands.help();
       },
       Error
     );

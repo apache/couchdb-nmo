@@ -4,7 +4,7 @@ import fs from 'fs';
 import xtend from 'xtend';
 import Promise from 'bluebird';
 
-import couchadmin from './couchadmin.js';
+import nemo from './nemo.js';
 
 const readFile = Promise.promisify(fs.readFile);
 let cfg;
@@ -29,7 +29,7 @@ export default function config (cmd, ...args) {
   return exports[cmd].apply(exports[cmd], [section, key, opts]);
 }
 
-export const load = function load (conf = '.couchadminrc', nopts = {}) {
+export const load = function load (conf = '.nemorc', nopts = {}) {
   const confFile = cc.find(conf);
   return new Promise((resolve, reject) => {
     cfg = cc(nopts)

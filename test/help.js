@@ -4,7 +4,7 @@ import Lab from 'lab';
 export const lab = Lab.script();
 
 import help from '../src/help.js';
-import {load} from '../src/couchadmin.js';
+import {load} from '../src/nemo.js';
 
 lab.experiment('help', () => {
 

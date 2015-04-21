@@ -1,16 +1,16 @@
-couchadmin-config(3) - configuration
-====================================
+nemo-config(3) - configuration
+==============================
 
 ### SYNOPSIS
 
-    couchadmin.commands.set(section, key, value)
-    couchadmin.commands.get([section], [key], [opts])
+    nemo.commands.set(section, key, value)
+    nemo.commands.get([section], [key], [opts])
 
 
 
 ### DESCRIPTION
 
-Manage the couchadmin configuration.
+Manage the nemo configuration.
 
   - set:
 

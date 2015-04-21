@@ -1,9 +1,9 @@
-couchadmin-is-online(3) - check if a cluster node is online
-===========================================================
+nemo-is-online(3) - check if a cluster node is online
+=====================================================
 
 ### SYNOPSIS
 
-    couchadmin.commands.isonline(url, [url], ..., opts)
+    nemo.commands.isonline(url, [url], ..., opts)
 
 
 ### DESCRIPTION
