@@ -50,7 +50,7 @@ function isonline (...args) {
           msg = 'seems to be online';
         }
         msg = 'seems to be offline';
-        log.info('status', entry, msg);
+        console.log(entry, msg);
       });
       return resolve(results);
     }, reject);

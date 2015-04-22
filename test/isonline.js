@@ -101,15 +101,11 @@ lab.experiment('isonline', () => {
   });
 
   lab.test('it logs per default', (done) => {
-    let msgs = '';
-    log.once('log', ({message: message}) => {
-      msgs += message;
-    });
-    isonline(common.NODE)
-      .then((res) => {
-        assert.ok(msgs);
-        done();
-      });
+    console.log = (...args) => {
+      assert.ok(args[0]);
+      done();
+    };
+    isonline(common.NODE);
   });
 
   lab.test('silent does not output', (done) => {
@@ -140,35 +136,14 @@ lab.experiment('isonline', () => {
       });
   });
 
-  lab.test('if json output is selected, colored output is not provided', (done) => {
-
-    let msgs = '';
-    log.once('log', ({message: message}) => {
-      msgs += message;
-    });
-
-    isonline(common.NODE, {silent: false, json: true})
-      .then((res) => {
-        assert.ok(!(/seems to be/).test(msgs));
-        done();
-      });
-  });
-
-  lab.test('if silent output is selected, colored output is not provided', (done) => {
+  lab.test('if silent output is selected, print output is not provided', (done) => {
 
     console.log = (...args) => {
       throw new Error('fail');
-      return oldConsole.apply(oldConsole, args);
     };
-
-    let msgs = '';
-    log.once('log', ({message: message}) => {
-      msgs += message;
-    });
 
     isonline(common.NODE, {silent: true, json: false})
       .then((res) => {
-        assert.ok(!(/seems to be/).test(msgs));
         assert.deepEqual(res, {[common.NODE]: true});
         done();
       });
