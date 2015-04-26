@@ -85,13 +85,11 @@ lab.experiment('isonline', () => {
   });
 
   lab.test('accepts multiple sites and options', (done) => {
-    const oldConsole = console.log;
     console.log = (...args) => {
       assert.deepEqual({
-        'http://127.0.0.1:1337': true,
-        'http://127.0.0.1:1338': true
+        [common.NODE]: true,
+        [common.NODE_TWO]: true
       }, args[0]);
-      return oldConsole.apply(oldConsole, args);
     };
     isonline(common.NODE, common.NODE_TWO, {json: true})
       .then((res) => {
@@ -110,24 +108,20 @@ lab.experiment('isonline', () => {
 
   lab.test('silent does not output', (done) => {
 
-    const oldConsole = console.log;
     console.log = (...args) => {
       throw new Error('not silent');
     };
 
     isonline(common.NODE, {silent: true, json: false})
       .then((res) => {
-        console.log = oldConsole;
         done();
       });
   });
 
   lab.test('can output json', (done) => {
 
-    const oldConsole = console.log;
     console.log = (...args) => {
-      assert.deepEqual({ 'http://127.0.0.1:1337': true }, args[0]);
-      return oldConsole.apply(oldConsole, args);
+      assert.deepEqual({ [common.NODE]: true }, args[0]);
     };
 
     isonline(common.NODE, {silent: false, json: true})
