@@ -45,11 +45,11 @@ function isonline (...args) {
       }
 
       Object.keys(results).forEach((entry) => {
-        let msg;
+        let msg = 'seems to be offline';
         if (results[entry]) {
           msg = 'seems to be online';
         }
-        msg = 'seems to be offline';
+
         console.log(entry, msg);
       });
       return resolve(results);

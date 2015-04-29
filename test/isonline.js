@@ -106,6 +106,22 @@ lab.experiment('isonline', () => {
     isonline(common.NODE);
   });
 
+  lab.test('returns online for online nodes', (done) => {
+    console.log = (...args) => {
+      assert.ok(/online/.test(args[1]), 'returns online for online nodes');
+      done();
+    };
+    isonline(common.NODE);
+  });
+
+  lab.test('returns offline for offline nodes', (done) => {
+    console.log = (...args) => {
+      assert.ok(/offline/.test(args[1]), 'returns offline for online nodes');
+      done();
+    };
+    isonline('http://exampleneverexists');
+  });
+
   lab.test('silent does not output', (done) => {
 
     console.log = (...args) => {
