@@ -30,8 +30,9 @@ export default function config (cmd, ...args) {
 }
 
 export const load = function load (conf = '.nemorc', nopts = {}) {
-  const confFile = cc.find(conf);
   return new Promise((resolve, reject) => {
+    const confFile = cc.find(conf);
+
     cfg = cc(nopts)
       .addFile(confFile, 'ini', 'config')
       .on('load', () => {

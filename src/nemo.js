@@ -22,7 +22,8 @@ Object.defineProperty(nemo, 'commands', {
 const commandFuncs = {};
 nemo.load = function load () {
   return new Promise((resolve, reject) => {
-    config.load()
+    config
+      .load()
       .then((config) => {
 
         nemo.config = config;
@@ -32,7 +33,9 @@ nemo.load = function load () {
         });
 
         resolve(nemo);
-    });
+      }).catch((err) => {
+        reject(err);
+      });
   });
 };
 
