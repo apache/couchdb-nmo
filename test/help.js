@@ -6,6 +6,8 @@ export const lab = Lab.script();
 import help from '../src/help.js';
 import {load} from '../src/nemo.js';
 
+const oldConsole = console.log;
+
 lab.experiment('help', () => {
 
   lab.before((done) => {
@@ -14,17 +16,19 @@ lab.experiment('help', () => {
     });
   });
 
+  lab.afterEach((done) => {
+    console.log = oldConsole;
+    done();
+  });
+
   lab.test('prints available commands', (done) => {
-    const oldConsole = console.log;
     console.log = (...args) => {
       assert.ok(/help/.test(args[0]));
       assert.ok(/isonline/.test(args[0]));
-      return oldConsole.apply(oldConsole, args);
     };
 
     help()
       .then((res) => {
-        console.log = oldConsole;
         done();
       });
   });

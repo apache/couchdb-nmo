@@ -19,17 +19,27 @@ Object.defineProperty(nemo, 'commands', {
   }
 });
 
-const commandFuncs = {};
-nemo.load = function load () {
+Object.defineProperty(nemo, 'cli', {
+  get: () => {
+    if (nemo.config === null) {
+      throw new Error('run nemo.load before');
+    }
+    return cliFuncs;
+  }
+});
+
+const commandFuncs = {}, cliFuncs = {};
+nemo.load = function load (opts) {
   return new Promise((resolve, reject) => {
     config
-      .load()
+      .load(opts)
       .then((config) => {
-
         nemo.config = config;
 
         commands.forEach((cmd) => {
-          commandFuncs[cmd] = require('./' + cmd + '.js');
+          const mod = require('./' + cmd + '.js');
+          commandFuncs[cmd] = mod.default ? mod.default : mod;
+          cliFuncs[cmd] = mod.cli;
         });
 
         resolve(nemo);

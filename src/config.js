@@ -9,29 +9,23 @@ import nemo from './nemo.js';
 const readFile = Promise.promisify(fs.readFile);
 let cfg;
 
-export default function config (cmd, ...args) {
+
+export const cli = configCli;
+function configCli (cmd, ...args) {
   if (!cmd) {
-    return get();
+    return cliGet();
   }
 
-  if (cmd === 'set') {
-    return exports[cmd].apply(exports[cmd], args);
+  if (cmd === 'get') {
+    cmd = 'cliGet';
   }
 
-  let opts = {silent: false, json: false};
-  if (typeof args[args.length -1] === 'object') {
-    opts = xtend(opts, args.pop());
-  }
-
-  let [section, key] = args;
-  opts.silent = false;
-
-  return exports[cmd].apply(exports[cmd], [section, key, opts]);
+  return exports[cmd].apply(exports[cmd], args);
 }
 
-export const load = function load (conf = '.nemorc', nopts = {}) {
+export const load = function load (nopts = {nemoconf: '.nemorc'}) {
   return new Promise((resolve, reject) => {
-    const confFile = cc.find(conf);
+    const confFile = cc.find(nopts.nemoconf || '.nemorc');
 
     cfg = cc(nopts)
       .addFile(confFile, 'ini', 'config')
@@ -54,38 +48,40 @@ export const set = function set (section, key, value) {
   });
 };
 
-export const get = function get (section, key, opts = {silent: false, json: false}) {
+export const get = getConf;
+function getConf (section, key) {
+  let res;
+  if (!section && !key) {
+    res = cfg.sources.config.data;
+  }
 
+  if (section && !key) {
+    res = cfg.sources.config.data[section];
+  }
+
+  if (section && key) {
+    res = cfg.sources.config.data[section][key];
+  }
+  return res;
+}
+
+
+export const cliGet = function cliGet (section, key) {
   return new Promise((resolve, reject) => {
-    let data;
-
-    if (!section && !key) {
-      data = cfg.sources.config.data;
-    }
-
-    if (section && !key) {
-      data = cfg.sources.config.data[section];
-    }
-
-    if (section && key) {
-      data = cfg.sources.config.data[section][key];
-    }
+    let data = getConf(section, key);
+    const jsonOut = nemo.config.get('json');
 
     if (typeof data === 'string') {
-      if (opts.json) {
+      if (jsonOut) {
         data = {[key]: data};
       }
-      if (!opts.silent) {
-        console.log(data);
-      }
+      console.log(data);
 
       return resolve(data);
     }
 
-    if (opts.json) {
-      if (!opts.silent) {
-        console.log(data);
-      }
+    if (jsonOut) {
+      console.log(data);
 
       return resolve(data);
     }
@@ -96,9 +92,7 @@ export const get = function get (section, key, opts = {silent: false, json: fals
 
     const parsed = ini.stringify(data);
 
-    if (!opts.silent) {
-      console.log(parsed);
-    }
+    console.log(parsed);
 
     return resolve(data);
   });

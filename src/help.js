@@ -17,8 +17,9 @@ nemo help <command>
 `;
 }
 
-
-export default function help () {
+export default help;
+export const cli = help;
+function help () {
   return new Promise((resolve, reject) => {
     const cmds = Object.keys(nemo.commands).join(', ');
 
