@@ -24,6 +24,4 @@ This will enable json output permanently.
  - get:
 
 Print sections or values inside sections from the configuration file.
-
-It will print the result as colored output. JSON output is also
-supported by passing the `--json` flag.
+JSON output is also supported by passing the `--json` flag.

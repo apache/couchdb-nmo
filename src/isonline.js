@@ -34,9 +34,11 @@ function isOnlineCli (...urls) {
 export default isonline;
 function isonline (...args) {
   return new Promise((resolve, reject) => {
+
     if (!args.length) {
       const err = new Error('Usage: nemo isonline <url>, [<url>] ...');
-      return reject(er);
+      err.type = 'EUSAGE';
+      return reject(err);
     }
 
     const urlPromises = args.map((url) => {
@@ -57,14 +59,16 @@ function isonline (...args) {
 
 function isNodeOnline (url) {
   return new Promise((resolve, reject) => {
-
     const er = utils.checkUrl(url);
+
     if (er) {
       return reject(er);
     }
-    log.http('request', 'GET', url);
+    const cleanedUrl = utils.removeUsernamePw(url);
+    log.http('request', 'GET', cleanedUrl);
 
     request(url, (err, res, body) => {
+
       if (err && (err.code === 'ECONNREFUSED'
         || err.code === 'ENOTFOUND')) {
         return resolve({[url]: false});
@@ -74,6 +78,7 @@ function isNodeOnline (url) {
         return reject(err);
       }
 
+      log.http(res.statusCode, cleanedUrl);
       resolve({[url]: res.statusCode < 300});
     });
   });

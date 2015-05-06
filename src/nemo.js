@@ -3,7 +3,8 @@ import * as config from './config.js';
 const commands = [
   'isonline',
   'help',
-  'config'
+  'config',
+  'cluster'
 ];
 
 const nemo = {
