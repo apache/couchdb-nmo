@@ -16,6 +16,34 @@ lab.experiment('isonline', () => {
 
   let servers, conf;
 
+  lab.experiment('cli', () => {
+    lab.beforeEach((done) => {
+      conf = {nemoconf: __dirname + '/fixtures/randomini'};
+
+      common.createTestServers().done((s) => {
+        servers = s;
+        done();
+      });
+    });
+
+    lab.afterEach((done) => {
+      console.log = oldConsole;
+
+      common.stopTestServers(servers).then((res) => {
+        done();
+      });
+    });
+
+    lab.test('returns error on no value provided', (done) => {
+      cli()
+        .catch((err) => {
+          assert.ok(err instanceof Error);
+          done();
+        });
+    });
+  });
+
+
   lab.experiment('api', () => {
     lab.beforeEach((done) => {
       conf = {nemoconf: __dirname + '/fixtures/randomini'};
@@ -25,6 +53,7 @@ lab.experiment('isonline', () => {
         done();
       });
     });
+
     lab.afterEach((done) => {
       console.log = oldConsole;
 
@@ -35,14 +64,6 @@ lab.experiment('isonline', () => {
 
     lab.test('rejects the promise for connection errors', (done) => {
       isonline(common.NODE + '/socketclose')
-        .catch((err) => {
-          assert.ok(err instanceof Error);
-          done();
-        });
-    });
-
-    lab.test('returns error on no value provided', (done) => {
-      isonline()
         .catch((err) => {
           assert.ok(err instanceof Error);
           done();

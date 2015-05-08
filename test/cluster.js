@@ -313,4 +313,16 @@ lab.experiment('cluster - cli', () => {
         .cli('join', 'clustervalidurls');
     });
   });
+
+  lab.test('returns error on wrong usage', (done) => {
+    nemo.load(nemoconf).then(() => {
+      cluster
+        .cli('lalala')
+    })
+    .catch((err) => {
+      assert.ok(err instanceof Error);
+      done();
+    });
+  });
+
 });

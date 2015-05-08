@@ -19,6 +19,19 @@ export function cli (cmd, ...args) {
     cmd = 'cliGet';
   }
 
+  if (!exports[cmd]) {
+    const msg = [
+      'Usage:',
+      '',
+      'nemo config get [<section>], [<key>] [--json]',
+      'nemo config set <section>, <key>, <value>'
+    ].join('\n');
+    const err = new Error(msg);
+    err.type = 'EUSAGE';
+
+    throw err;
+  }
+
   return exports[cmd].apply(exports[cmd], args);
 };
 

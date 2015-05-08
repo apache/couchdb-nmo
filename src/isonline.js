@@ -8,6 +8,13 @@ import nemo from './nemo.js';
 export const cli = isOnlineCli;
 function isOnlineCli (...urls) {
   return new Promise((resolve, reject) => {
+
+    if (!urls.length) {
+      const err = new Error('Usage: nemo isonline <url>, [<url>] ...');
+      err.type = 'EUSAGE';
+      return reject(err);
+    }
+
     isonline.apply(isonline, urls)
       .then((results) => {
         const jsonOut = nemo.config.get('json');
@@ -34,12 +41,6 @@ function isOnlineCli (...urls) {
 export default isonline;
 function isonline (...args) {
   return new Promise((resolve, reject) => {
-
-    if (!args.length) {
-      const err = new Error('Usage: nemo isonline <url>, [<url>] ...');
-      err.type = 'EUSAGE';
-      return reject(err);
-    }
 
     const urlPromises = args.map((url) => {
       return isNodeOnline(url);

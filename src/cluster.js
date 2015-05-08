@@ -16,6 +16,21 @@ const cmdCommands = {
 };
 
 export function cli (cmd, ...args) {
+
+  if (!cmdCommands[cmd]) {
+    const msg = [
+      'Usage:',
+      '',
+      'nemo cluster get [<clustername>], [<nodename>]',
+      'nemo cluster add <nodename>, <url>, <clustername>',
+      'nemo cluster join <clustername>'
+    ].join('\n');
+    const err = new Error(msg);
+    err.type = 'EUSAGE';
+
+    throw err;
+  }
+
   return cmdCommands[cmd].apply(exports[cmd], args);
 };
 
