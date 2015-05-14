@@ -3,6 +3,7 @@ import ini from 'ini';
 import fs from 'fs';
 import xtend from 'xtend';
 import Promise from 'bluebird';
+import osenv from 'osenv';
 
 import nemo from './nemo.js';
 
@@ -37,7 +38,14 @@ export function cli (cmd, ...args) {
 
 export const load = function load (nopts = {nemoconf: '.nemorc'}) {
   return new Promise((resolve, reject) => {
-    const confFile = cc.find(nopts.nemoconf);
+    let confFile = cc.find(nopts.nemoconf);
+
+    if (!confFile) {
+      const home = osenv.home();
+      fs.writeFileSync(home + '/.nemorc', '');
+    }
+
+    confFile = cc.find(nopts.nemoconf);
 
     cfg = cc(nopts)
       .addFile(confFile, 'ini', 'config')
