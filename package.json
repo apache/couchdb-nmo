@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "transpile": "babel src -d lib",
-    "prepublish": "npm run transpile",
+    "prepublish": "make && npm run transpile",
     "test": "lab -v --transform node_modules/lab-babel -t 100 -S"
   },
   "author": "Robert Kowalski <rok@kowalski.gd>",
@@ -23,6 +23,8 @@
   },
   "devDependencies": {
     "lab": "~5.5.1",
-    "lab-babel": "~1.0.0"
+    "lab-babel": "~1.0.0",
+    "less": "~2.5.0",
+    "node-doc-generator": "robertkowalski/node-documentation-generator#sloppy"
   }
 }

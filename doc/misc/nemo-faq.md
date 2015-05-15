@@ -1,5 +1,5 @@
-nemo-faq(7) - Frequently Asked Questions
-========================================
+nemo-faq(7) -- Frequently Asked Questions
+=========================================
 
 ## Where are my clusters and config stored?
 

@@ -1,12 +1,12 @@
-nemo-is-online(3) - check if a cluster node is online
+nemo-isonline(3) -- check if a cluster node is online
 =====================================================
 
-### SYNOPSIS
+## SYNOPSIS
 
     nemo.commands.isonline(url, [url], ...)
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 Check if nodes are online / available on the current network.
 

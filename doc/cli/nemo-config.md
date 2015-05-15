@@ -1,13 +1,13 @@
-nemo-config(1) - manage nemo's configuration
-============================================
+nemo-config(1) -- manage nemo's configuration
+=============================================
 
-### SYNOPSIS
+## SYNOPSIS
 
     nemo config get [<section>], [<key>] [--json]
     nemo config set <section>, <key>, <value>
 
 
-### DESCRIPTION
+## DESCRIPTION
 
  - set:
 

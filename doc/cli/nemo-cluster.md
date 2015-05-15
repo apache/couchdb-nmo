@@ -1,14 +1,14 @@
-nemo-cluster(1) - manage clusters
-=================================
+nemo-cluster(1) -- manage clusters
+==================================
 
-### SYNOPSIS
+## SYNOPSIS
 
     nemo cluster get [<clustername>], [<nodename>] [--json]
     nemo cluster add <node>, <url>, <clustername>
     nemo cluster join <clustername>
 
 
-### DESCRIPTION
+## DESCRIPTION
 
  - add:
 

@@ -1,12 +1,11 @@
-nemo-help(1) - get help
-=======================
+nemo-help(1) -- get help
+========================
 
-### SYNOPSIS
+## SYNOPSIS
 
     nemo help
-    nemo h
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 Prints the available commands.

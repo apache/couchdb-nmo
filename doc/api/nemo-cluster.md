@@ -1,14 +1,14 @@
-nemo-cluster(3) - manage clusters
-=================================
+nemo-cluster(3) -- manage clusters
+==================================
 
-### SYNOPSIS
+## SYNOPSIS
 
     nemo.commands.cluster.add(node, url, cluster)
     nemo.commands.cluster.get([clustername], [node])
     nemo.commands.cluster.join(clustername)
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 Manage clusters.
 
