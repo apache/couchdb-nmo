@@ -64,7 +64,8 @@ export function join (cluster) {
       }, []);
 
       const downNodesCount = downNodes.length;
-      var force = nemo.config.get('force');
+      const force = nemo.config.get('force');
+
       if (downNodesCount && !force) {
         const nodeNodes = downNodesCount > 1 ? 'nodes are' : 'node is';
         const msg = [
@@ -142,40 +143,37 @@ export function join (cluster) {
 
 function testClusterConf (cluster) {
   if (!cluster) {
-    const err = new Error('Usage: nemo cluster join <clustername>');
-    err.type = 'EUSAGE';
-    throw err;
+    let msg = 'Usage: nemo cluster join <clustername>';
+    throwUp(msg);
   }
   // config
   if (cluster === 'nemoconfig') {
-    const err = new Error('nemoconfig is not a valid clustername');
-    err.type = 'EUSAGE';
-    throw err;
+    let msg = 'nemoconfig is not a valid clustername';
+    throwUp(msg);
   }
 
-  let msg;
   if (!config.get(cluster)) {
-    msg = [
+    let msg = [
       'Cluster does not have any nodes.',
       'You can add nodes using:',
       '',
       'nemo cluster add <nodename>, <url>, <clustername>'
     ].join('\n');
-    throwUp();
+    throwUp(msg);
   }
 
   if (Object.keys(config.get(cluster)).length <= 1) {
-    msg = [
+    let msg = [
       'Cluster does not have enough nodes.',
       'You need at least two nodes in a cluster',
       'You can add nodes using:',
       '',
       'nemo cluster add <nodename>, <url>, <clustername>'
     ].join('\n');
-    throwUp();
+    throwUp(msg);
   }
 
-  function throwUp () {
+  function throwUp (msg) {
     let err = new Error(msg);
     err.type = 'EUSAGE';
     throw err;
