@@ -45,6 +45,7 @@ const nemoconf = {nemoconf: __dirname + '/fixtures/randomini'};
 const oldConsole = console.log;
 
 lab.experiment('cluster - get', () => {
+  fs.writeFileSync(__dirname + '/fixtures/randomini', data, 'utf-8');
 
   lab.test('errors on nemoconf', (done) => {
     nemo.load(nemoconf).then(() => {
@@ -70,6 +71,7 @@ lab.experiment('cluster - get', () => {
 });
 
 lab.experiment('cluster - add', () => {
+  fs.writeFileSync(__dirname + '/fixtures/randomini', data, 'utf-8');
 
   lab.test('errors on empty args', (done) => {
     nemo.load(nemoconf).then(() => {
