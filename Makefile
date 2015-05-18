@@ -119,6 +119,7 @@ man/man7/%.7:
 	$(marked) doc/misc/$*.md > $@
 
 clean:
+	rm -rf lib
 	rm -rf man
 	rm -rf website
 
