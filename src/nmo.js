@@ -7,35 +7,35 @@ const commands = [
   'cluster'
 ];
 
-const nemo = {
+const nmo = {
   config: null
 };
 
-Object.defineProperty(nemo, 'commands', {
+Object.defineProperty(nmo, 'commands', {
   get: () => {
-    if (nemo.config === null) {
-      throw new Error('run nemo.load before');
+    if (nmo.config === null) {
+      throw new Error('run nmo.load before');
     }
     return commandFuncs;
   }
 });
 
-Object.defineProperty(nemo, 'cli', {
+Object.defineProperty(nmo, 'cli', {
   get: () => {
-    if (nemo.config === null) {
-      throw new Error('run nemo.load before');
+    if (nmo.config === null) {
+      throw new Error('run nmo.load before');
     }
     return cliFuncs;
   }
 });
 
 const commandFuncs = {}, cliFuncs = {};
-nemo.load = function load (opts) {
+nmo.load = function load (opts) {
   return new Promise((resolve, reject) => {
     config
       .load(opts)
       .then((config) => {
-        nemo.config = config;
+        nmo.config = config;
 
         commands.forEach((cmd) => {
           const mod = require('./' + cmd + '.js');
@@ -43,11 +43,11 @@ nemo.load = function load (opts) {
           cliFuncs[cmd] = mod.cli;
         });
 
-        resolve(nemo);
+        resolve(nmo);
       }).catch((err) => {
         reject(err);
       });
   });
 };
 
-export default nemo;
+export default nmo;

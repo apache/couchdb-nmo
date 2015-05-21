@@ -74,7 +74,7 @@ website/index.html: website/toc-index.html
 website/toc-index.html:
 	touch website/toc-index.html
 	for file in $(tocfiles) ; do \
-		tmp=$${file##*/nemo-}; \
+		tmp=$${file##*/nmo-}; \
 		title=`expr "$$tmp" : '\(.*\).html'`; \
 		echo "<a href=\"./$$file\">$$title</a>" >> website/toc-index.html; \
 	done
@@ -82,7 +82,7 @@ website/toc-index.html:
 website/toc.html: $(websitefiles)
 	touch website/toc.html
 	for file in $(tocfiles) ; do \
-		tmp=$${file##*/nemo-}; \
+		tmp=$${file##*/nmo-}; \
 		title=`expr "$$tmp" : '\(.*\).html'`; \
 		echo "<a href=\"../$$file\">$$title</a>" >> website/toc.html; \
 	done
@@ -129,4 +129,4 @@ testwebsite: clean website
 
 deploy: clean website
 	@cd ./website && git init . && git add . && git commit -nm \"Deployment\" && \
-	git push "git@github.com:robertkowalski/nemo.git" master:gh-pages --force && rm -rf .git
+	git push "git@github.com:robertkowalski/nmo.git" master:gh-pages --force && rm -rf .git

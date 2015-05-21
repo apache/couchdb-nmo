@@ -6,7 +6,7 @@ export const lab = Lab.script();
 import help from '../src/help.js';
 import {cli} from '../src/help.js';
 
-import {load} from '../src/nemo.js';
+import {load} from '../src/nmo.js';
 
 const oldConsole = console.log;
 

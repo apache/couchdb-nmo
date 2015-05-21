@@ -4,7 +4,7 @@ import Lab from 'lab';
 export const lab = Lab.script();
 
 import * as config from '../src/config.js';
-import nemo from '../src/nemo.js';
+import nmo from '../src/nmo.js';
 
 import ini from 'ini';
 import fs from 'fs';
@@ -53,7 +53,7 @@ lab.experiment('config', () => {
 
     lab.test('loads a defined config', (done) => {
 
-      config.load({nemoconf: __dirname + '/fixtures/randomini'})
+      config.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           assert.equal(res.get('gang').rocko, 'artischocko');
           done();
@@ -70,7 +70,7 @@ lab.experiment('config', () => {
 
     lab.test('saves a value', (done) => {
 
-      config.load({nemoconf: __dirname + '/fixtures/randomini'})
+      config.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.set('cluster1337', 'node1337', '192.168.133.7').then((e) => {
             const c = ini.parse(fs.readFileSync(__dirname + '/fixtures/randomini', 'utf-8'));
@@ -84,7 +84,7 @@ lab.experiment('config', () => {
 
     lab.test('errors if not all values provided', (done) => {
 
-      config.load({nemoconf: __dirname + '/fixtures/randomini'})
+      config.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.set().catch((err) => {
             assert.ok(err instanceof Error);
@@ -95,7 +95,7 @@ lab.experiment('config', () => {
 
     lab.test('errors if not all values provided', (done) => {
 
-      config.load({nemoconf: __dirname + '/fixtures/randomini'})
+      config.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.set('foo').catch((err) => {
             assert.ok(err instanceof Error);
@@ -106,7 +106,7 @@ lab.experiment('config', () => {
 
     lab.test('errors if not all values provided', (done) => {
 
-      config.load({nemoconf: __dirname + '/fixtures/randomini'})
+      config.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.set('foo', 'bar').catch((err) => {
             assert.ok(err instanceof Error);
@@ -117,7 +117,7 @@ lab.experiment('config', () => {
 
     lab.test('saves can overwrite old values', (done) => {
 
-      config.load({nemoconf: __dirname + '/fixtures/randomini'})
+      config.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.set('clusterone', 'node1', '192.168.133.7').then((e) => {
             const c = ini.parse(fs.readFileSync(__dirname + '/fixtures/randomini', 'utf-8'));
@@ -137,7 +137,7 @@ lab.experiment('config', () => {
 
     lab.test('returns the whole config as JSON', (done) => {
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           const result = config.get();
           assert.deepEqual(jsonData, result);
@@ -147,7 +147,7 @@ lab.experiment('config', () => {
 
     lab.test('will get sections as JSON', (done) => {
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           const result = config.get('gang');
           assert.deepEqual(jsonData.gang, result);
@@ -157,7 +157,7 @@ lab.experiment('config', () => {
 
     lab.test('will get keys', (done) => {
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           const result = config.get('gang', 'rocko');
           assert.equal(jsonData.gang.rocko, result);
@@ -180,7 +180,7 @@ lab.experiment('config', () => {
 
    lab.test('it can get the whole config', (done) => {
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.cli().then((result) => {
             assert.deepEqual(jsonData, result);
@@ -195,7 +195,7 @@ lab.experiment('config', () => {
         assert.equal(data, args[0]);
       };
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.cli('get').then((result) => {
             done();
@@ -209,7 +209,7 @@ lab.experiment('config', () => {
         assert.deepEqual(jsonData, args[0]);
       };
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini', json: true})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then((res) => {
           config.cli('get').then((result) => {
             done();
@@ -219,7 +219,7 @@ lab.experiment('config', () => {
 
     lab.test('it can handle sections in the config', (done) => {
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.cli('get', 'gang').then((result) => {
             assert.deepEqual(jsonData.gang, result);
@@ -234,7 +234,7 @@ lab.experiment('config', () => {
         assert.equal(gangConf, args[0]);
       };
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.cli('get', 'gang').then((result) => {
             done();
@@ -244,7 +244,7 @@ lab.experiment('config', () => {
 
     lab.test('it can handle sections with keys in the config', (done) => {
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini', json: true})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then((res) => {
           config.cli('get', 'gang', 'rocko').then((result) => {
             assert.deepEqual({rocko: 'artischocko'}, result);
@@ -259,7 +259,7 @@ lab.experiment('config', () => {
         assert.equal('artischocko', args[0]);
       };
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.cli('get', 'gang', 'rocko').then((result) => {
             done();
@@ -273,7 +273,7 @@ lab.experiment('config', () => {
         assert.deepEqual({rocko: 'artischocko'}, args[0]);
       };
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini', json: true})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then((res) => {
           config.cli('get', 'gang', 'rocko').then((result) => {
             done();
@@ -283,7 +283,7 @@ lab.experiment('config', () => {
 
     lab.test('saves a value', (done) => {
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then((res) => {
           config.cli('set', 'cluster1337', 'node1337', '192.168.133.7').then((e) => {
             const c = ini.parse(fs.readFileSync(__dirname + '/fixtures/randomini', 'utf-8'));
@@ -296,7 +296,7 @@ lab.experiment('config', () => {
     });
 
     lab.test('returns error on wrong usage', (done) => {
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'}).then(() => {
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
         config
           .cli('lalala')
       })

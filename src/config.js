@@ -5,7 +5,7 @@ import xtend from 'xtend';
 import Promise from 'bluebird';
 import osenv from 'osenv';
 
-import nemo from './nemo.js';
+import nmo from './nmo.js';
 
 const readFile = Promise.promisify(fs.readFile);
 let cfg;
@@ -24,8 +24,8 @@ export function cli (cmd, ...args) {
     const msg = [
       'Usage:',
       '',
-      'nemo config get [<section>], [<key>] [--json]',
-      'nemo config set <section>, <key>, <value>'
+      'nmo config get [<section>], [<key>] [--json]',
+      'nmo config set <section>, <key>, <value>'
     ].join('\n');
     const err = new Error(msg);
     err.type = 'EUSAGE';
@@ -36,16 +36,16 @@ export function cli (cmd, ...args) {
   return exports[cmd].apply(exports[cmd], args);
 };
 
-export const load = function load (nopts = {nemoconf: '.nemorc'}) {
+export const load = function load (nopts = {nmoconf: '.nmorc'}) {
   return new Promise((resolve, reject) => {
-    let confFile = cc.find(nopts.nemoconf);
+    let confFile = cc.find(nopts.nmoconf);
 
     if (!confFile) {
       const home = osenv.home();
-      fs.writeFileSync(home + '/.nemorc', '');
+      fs.writeFileSync(home + '/.nmorc', '');
     }
 
-    confFile = cc.find(nopts.nemoconf);
+    confFile = cc.find(nopts.nmoconf);
 
     cfg = cc(nopts)
       .addFile(confFile, 'ini', 'config')
@@ -101,7 +101,7 @@ export function cliGet (section, key) {
 };
 
 export function handleResult (data, key) {
-  const jsonOut = nemo.config.get('json');
+  const jsonOut = nmo.config.get('json');
 
   if (typeof data === 'string') {
     if (jsonOut) {

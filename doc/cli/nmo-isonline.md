@@ -1,9 +1,9 @@
-nemo-isonline(1) -- check if a cluster node is online
-======================================================
+nmo-isonline(1) -- check if a cluster node is online
+====================================================
 
 ## SYNOPSIS
 
-    nemo isonline <url> [<url>, <url> ...] [--json]
+    nmo isonline <url> [<url>, <url> ...] [--json]
 
 
 ## DESCRIPTION

@@ -4,7 +4,7 @@ import Lab from 'lab';
 export const lab = Lab.script();
 
 import * as cluster from '../src/cluster.js';
-import nemo from '../src/nemo.js';
+import nmo from '../src/nmo.js';
 import * as common from './common.js';
 
 import fs from 'fs';
@@ -41,16 +41,16 @@ node1=${common.NODE}
 node2=${common.NODE_TWO + '/socket_close_on_second_request'}
 `;
 
-const nemoconf = {nemoconf: __dirname + '/fixtures/randomini'};
+const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
 const oldConsole = console.log;
 
 lab.experiment('cluster - get', () => {
   fs.writeFileSync(__dirname + '/fixtures/randomini', data, 'utf-8');
 
-  lab.test('errors on nemoconf', (done) => {
-    nemo.load(nemoconf).then(() => {
+  lab.test('errors on nmoconf', (done) => {
+    nmo.load(nmoconf).then(() => {
       cluster
-        .get('nemoconfig')
+        .get('nmoconfig')
         .catch((err) => {
           assert.ok(/valid/.test(err.message));
           done();
@@ -59,7 +59,7 @@ lab.experiment('cluster - get', () => {
   });
 
   lab.test('returns the clustername', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .get('clusterone', 'node0')
         .then((res) => {
@@ -74,7 +74,7 @@ lab.experiment('cluster - add', () => {
   fs.writeFileSync(__dirname + '/fixtures/randomini', data, 'utf-8');
 
   lab.test('errors on empty args', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .add()
         .catch((err) => {
@@ -84,10 +84,10 @@ lab.experiment('cluster - add', () => {
     });
   });
 
-  lab.test('errors on nemoconf', (done) => {
-    nemo.load(nemoconf).then(() => {
+  lab.test('errors on nmoconf', (done) => {
+    nmo.load(nmoconf).then(() => {
       cluster
-        .add('foo', 'bar', 'nemoconfig')
+        .add('foo', 'bar', 'nmoconfig')
         .catch((err) => {
           assert.ok(/valid/.test(err.message));
           done();
@@ -96,7 +96,7 @@ lab.experiment('cluster - add', () => {
   });
 
   lab.test('adds cluster', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .add('rockbert', 'artischockbert', 'foocluster')
         .then((res) => {
@@ -132,7 +132,7 @@ lab.experiment('cluster - join', () => {
 
 
   lab.test('errors on empty args', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join()
         .catch((err) => {
@@ -142,10 +142,10 @@ lab.experiment('cluster - join', () => {
     });
   });
 
-  lab.test('errors on nemoconf', (done) => {
-    nemo.load(nemoconf).then(() => {
+  lab.test('errors on nmoconf', (done) => {
+    nmo.load(nmoconf).then(() => {
       cluster
-        .join('nemoconfig')
+        .join('nmoconfig')
         .catch((err) => {
           assert.ok(/valid/.test(err.message));
           done();
@@ -154,7 +154,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('errors on a cluster with no nodes', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('doesnotexist')
         .catch((err) => {
@@ -165,7 +165,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('errors on cluster with 1 node', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('onenodecluster')
         .catch((err) => {
@@ -176,7 +176,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('warns on offline node', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('clustervalidurlsbothdown')
         .catch((err) => {
@@ -187,7 +187,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('warns on offline nodes', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('clustervalidurlsonedown')
         .catch((err) => {
@@ -198,7 +198,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('succeeds at online nodes with pw', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('clustervalidurlswithpw')
         .then((res) => {
@@ -209,7 +209,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('succeeds at online nodes', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('clustervalidurls')
         .then((res) => {
@@ -220,7 +220,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('succeeds with offline nodes, but --force given', (done) => {
-    nemo.load({nemoconf: __dirname + '/fixtures/randomini', force: true}).then(() => {
+    nmo.load({nmoconf: __dirname + '/fixtures/randomini', force: true}).then(() => {
       cluster
         .join('clustervalidurlsonedown')
         .then((res) => {
@@ -231,7 +231,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('rejects on connection errors', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('clustervalidurlsclosingsocket')
         .catch((err) => {
@@ -242,7 +242,7 @@ lab.experiment('cluster - join', () => {
   });
 
   lab.test('rejects on connection errors during join', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .join('clustervalidurlsclosingsocketaftercheck')
         .catch((err) => {
@@ -274,7 +274,7 @@ lab.experiment('cluster - cli', () => {
   });
 
   lab.test('adds cluster', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .cli('add', 'rockbert', 'artischockbert', 'foocluster2')
         .then((res) => {
@@ -294,7 +294,7 @@ lab.experiment('cluster - cli', () => {
       done();
     };
 
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .cli('add', 'rockbert', 'artischockbert', 'foocluster3')
         .then((res) => {
@@ -310,14 +310,14 @@ lab.experiment('cluster - cli', () => {
       done()
     };
 
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .cli('join', 'clustervalidurls');
     });
   });
 
   lab.test('returns error on wrong usage', (done) => {
-    nemo.load(nemoconf).then(() => {
+    nmo.load(nmoconf).then(() => {
       cluster
         .cli('lalala')
     })

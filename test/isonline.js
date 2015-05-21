@@ -6,7 +6,7 @@ import {cli} from '../src/isonline.js';
 
 import * as common from './common.js';
 import log from 'npmlog';
-import nemo from '../src/nemo.js';
+import nmo from '../src/nmo.js';
 
 
 export let lab = Lab.script();
@@ -18,7 +18,7 @@ lab.experiment('isonline', () => {
 
   lab.experiment('cli', () => {
     lab.beforeEach((done) => {
-      conf = {nemoconf: __dirname + '/fixtures/randomini'};
+      conf = {nmoconf: __dirname + '/fixtures/randomini'};
 
       common.createTestServers().done((s) => {
         servers = s;
@@ -46,7 +46,7 @@ lab.experiment('isonline', () => {
 
   lab.experiment('api', () => {
     lab.beforeEach((done) => {
-      conf = {nemoconf: __dirname + '/fixtures/randomini'};
+      conf = {nmoconf: __dirname + '/fixtures/randomini'};
 
       common.createTestServers().done((s) => {
         servers = s;
@@ -103,8 +103,8 @@ lab.experiment('isonline', () => {
     });
 
     lab.test('accepts multiple sites and options', (done) => {
-      nemo
-        .load({nemoconf: __dirname + '/fixtures/randomini', json: true})
+      nmo
+        .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then(() => {
           isonline(common.NODE, common.NODE_TWO).then((res) => {
             assert.deepEqual(res, {
@@ -119,7 +119,7 @@ lab.experiment('isonline', () => {
 
   lab.experiment('cli', () => {
     lab.beforeEach((done) => {
-      conf = {nemoconf: __dirname + '/fixtures/randomini'};
+      conf = {nmoconf: __dirname + '/fixtures/randomini'};
 
       common.createTestServers().done((s) => {
         servers = s;
@@ -138,7 +138,7 @@ lab.experiment('isonline', () => {
         assert.ok(/online/.test(args[1]), 'returns online for online nodes');
         done();
       };
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then(() => {
           cli(common.NODE);
         });
@@ -149,7 +149,7 @@ lab.experiment('isonline', () => {
         assert.ok(/offline/.test(args[1]), 'returns offline for online nodes');
         done();
       };
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
         .then(() => {
           cli('http://exampleneverexists');
         });
@@ -161,7 +161,7 @@ lab.experiment('isonline', () => {
         assert.deepEqual({ [common.NODE]: true }, args[0]);
       };
 
-      nemo.load({nemoconf: __dirname + '/fixtures/randomini', json: true})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then(() => {
           cli(common.NODE)
             .then(() => {

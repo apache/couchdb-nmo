@@ -1,4 +1,4 @@
-## how to use nemo?
+## how to use nmo?
 
 Take a look at our video
 
@@ -10,23 +10,23 @@ Take a look at our video
 
 ```
 # check if node is online
-nemo isonline http://foo:bar@localhost:15984
+nmo isonline http://foo:bar@localhost:15984
 
 # create a cluster config for the cluster anemone
-nemo cluster add node1 http://foo:bar@localhost:15984 anemone
-nemo cluster add node2 http://foo:bar@localhost:25984 anemone
-nemo cluster add node3 http://foo:bar@localhost:35984 anemone
+nmo cluster add node1 http://foo:bar@localhost:15984 anemone
+nmo cluster add node2 http://foo:bar@localhost:25984 anemone
+nmo cluster add node3 http://foo:bar@localhost:35984 anemone
 
 # check config
-nemo cluster
+nmo cluster
 
 # we support json!
-nemo cluster --json
-nemo isonline http://foo:bar@localhost:15984 --json
+nmo cluster --json
+nmo isonline http://foo:bar@localhost:15984 --json
 
 # join cluster
-nemo cluster join anemone
+nmo cluster join anemone
 
 # try again
-nemo cluster join anemone
+nmo cluster join anemone
 ```

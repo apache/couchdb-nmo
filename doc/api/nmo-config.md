@@ -1,16 +1,16 @@
-nemo-config(3) -- configuration
-===============================
+nmo-config(3) -- configuration
+==============================
 
 ## SYNOPSIS
 
-    nemo.commands.config.set(section, key, value)
-    nemo.commands.config.get([section], [key])
+    nmo.commands.config.set(section, key, value)
+    nmo.commands.config.get([section], [key])
 
 
 
 ## DESCRIPTION
 
-Manage the nemo configuration.
+Manage the nmo configuration.
 
   - set:
 

@@ -1,9 +1,9 @@
 {
-  "name": "nemo",
+  "name": "nmo",
   "version": "1.0.0",
   "description": "A tool to manage your CouchDB cluster",
-  "main": "lib/nemo.js",
-  "bin": "bin/nemo-cli.js",
+  "main": "lib/nmo.js",
+  "bin": "bin/nmo-cli.js",
   "scripts": {
     "transpile": "babel src -d lib",
     "prepublish": "make && npm run transpile",
@@ -12,7 +12,7 @@
   "author": "Robert Kowalski <rok@kowalski.gd>",
   "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/robertkowalski/nemo/issues"
+    "url": "https://github.com/robertkowalski/nmo/issues"
   },
   "directories": {
     "bin": "./bin",

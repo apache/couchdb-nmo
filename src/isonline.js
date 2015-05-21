@@ -2,7 +2,7 @@ import * as utils from './utils.js';
 import log from 'npmlog';
 import request from 'request';
 import Promise from 'bluebird';
-import nemo from './nemo.js';
+import nmo from './nmo.js';
 
 
 export const cli = isOnlineCli;
@@ -10,14 +10,14 @@ function isOnlineCli (...urls) {
   return new Promise((resolve, reject) => {
 
     if (!urls.length) {
-      const err = new Error('Usage: nemo isonline <url>, [<url>] ...');
+      const err = new Error('Usage: nmo isonline <url>, [<url>] ...');
       err.type = 'EUSAGE';
       return reject(err);
     }
 
     isonline.apply(isonline, urls)
       .then((results) => {
-        const jsonOut = nemo.config.get('json');
+        const jsonOut = nmo.config.get('json');
 
         if (jsonOut) {
           console.log(results);

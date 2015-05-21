@@ -3,15 +3,15 @@ import assert from 'assert';
 import Lab from 'lab';
 export const lab = Lab.script();
 
-import nemo from '../src/nemo.js';
+import nmo from '../src/nmo.js';
 
 
-lab.experiment('nemo', () => {
+lab.experiment('nmo', () => {
   lab.test('throws for api commands if config not loaded', (done) => {
-    nemo.config = null;
+    nmo.config = null;
     assert.throws(
       function () {
-        nemo.commands.help();
+        nmo.commands.help();
       },
       Error
     );
@@ -19,10 +19,10 @@ lab.experiment('nemo', () => {
   });
 
   lab.test('throws for cli commands if config not loaded', (done) => {
-    nemo.config = null;
+    nmo.config = null;
     assert.throws(
       function () {
-        nemo.cli.help();
+        nmo.cli.help();
       },
       Error
     );
@@ -30,16 +30,16 @@ lab.experiment('nemo', () => {
   });
 
   lab.test('does not throw for cli commands if config not loaded', (done) => {
-    nemo.config = null;
-    nemo.load({nemoconf: __dirname + '/fixtures/randomini'}).then(() => {
-      nemo.cli.help().then(() => {
+    nmo.config = null;
+    nmo.load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
+      nmo.cli.help().then(() => {
         done();
       });
     });
   });
 
   lab.test('rejects on failure', (done) => {
-    nemo.load({nemoconf: 'bler'}).catch(() => {
+    nmo.load({nmoconf: 'bler'}).catch(() => {
       done();
     });
   });

@@ -1,7 +1,6 @@
-# nemo
+# nmo
 
-`nemo` is a cli tool to manage CouchDB Clusters and nodes in a
-cluster.
+`nmo` is a cli tool to manage CouchDB clusters and nodes.
 
 ## Contributing
 

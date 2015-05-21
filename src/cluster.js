@@ -1,5 +1,5 @@
 import * as config from './config.js';
-import nemo from './nemo.js';
+import nmo from './nmo.js';
 import isonline from './isonline.js';
 
 import xtend from 'xtend';
@@ -21,9 +21,9 @@ export function cli (cmd, ...args) {
     const msg = [
       'Usage:',
       '',
-      'nemo cluster get [<clustername>], [<nodename>]',
-      'nemo cluster add <nodename>, <url>, <clustername>',
-      'nemo cluster join <clustername>'
+      'nmo cluster get [<clustername>], [<nodename>]',
+      'nmo cluster add <nodename>, <url>, <clustername>',
+      'nmo cluster join <clustername>'
     ].join('\n');
     const err = new Error(msg);
     err.type = 'EUSAGE';
@@ -64,14 +64,14 @@ export function join (cluster) {
       }, []);
 
       const downNodesCount = downNodes.length;
-      const force = nemo.config.get('force');
+      const force = nmo.config.get('force');
 
       if (downNodesCount && !force) {
         const nodeNodes = downNodesCount > 1 ? 'nodes are' : 'node is';
         const msg = [
           `it seems that ${downNodesCount} ${nodeNodes} offline.`,
           `if you really want to continue, use:`,
-          `nemo join ${cluster} --force`
+          `nmo join ${cluster} --force`
         ].join('\n');
 
         const err = new Error(msg);
@@ -143,12 +143,12 @@ export function join (cluster) {
 
 function testClusterConf (cluster) {
   if (!cluster) {
-    let msg = 'Usage: nemo cluster join <clustername>';
+    let msg = 'Usage: nmo cluster join <clustername>';
     throwUp(msg);
   }
   // config
-  if (cluster === 'nemoconfig') {
-    let msg = 'nemoconfig is not a valid clustername';
+  if (cluster === 'nmoconfig') {
+    let msg = 'nmoconfig is not a valid clustername';
     throwUp(msg);
   }
 
@@ -157,7 +157,7 @@ function testClusterConf (cluster) {
       'Cluster does not have any nodes.',
       'You can add nodes using:',
       '',
-      'nemo cluster add <nodename>, <url>, <clustername>'
+      'nmo cluster add <nodename>, <url>, <clustername>'
     ].join('\n');
     throwUp(msg);
   }
@@ -168,7 +168,7 @@ function testClusterConf (cluster) {
       'You need at least two nodes in a cluster',
       'You can add nodes using:',
       '',
-      'nemo cluster add <nodename>, <url>, <clustername>'
+      'nmo cluster add <nodename>, <url>, <clustername>'
     ].join('\n');
     throwUp(msg);
   }
@@ -184,8 +184,8 @@ function testClusterConf (cluster) {
 export function add (node, url, cluster) {
   return new Promise((resolve, reject) => {
     // config
-    if (cluster === 'nemoconfig') {
-      const err = new Error('nemoconf is not a valid clustername');
+    if (cluster === 'nmoconfig') {
+      const err = new Error('nmoconf is not a valid clustername');
       err.type = 'EUSAGE';
       return reject(err);
     }
@@ -212,14 +212,14 @@ function getCli (cluster, node) {
 export function get (cluster, node) {
   return new Promise((resolve, reject) => {
     // config
-    if (cluster === 'nemoconfig') {
-      const err = new Error('nemoconf is not a valid clustername');
+    if (cluster === 'nmoconfig') {
+      const err = new Error('nmoconf is not a valid clustername');
       err.type = 'EUSAGE';
       return reject(err);
     }
 
     const data = config.get(cluster, node);
-    delete data.nemoconfig;
+    delete data.nmoconfig;
 
     return resolve(data);
   });
