@@ -1,4 +1,5 @@
 import * as config from './config.js';
+import Promise from 'bluebird';
 
 const commands = [
   'isonline',
