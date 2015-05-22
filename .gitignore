@@ -21,6 +21,6 @@ node_modules/.bin/marked-man
 
 test/fixtures
 
-lib
-man
+/lib/
+/man/
 /website/
