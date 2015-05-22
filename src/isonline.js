@@ -60,9 +60,14 @@ function isonline (...args) {
 
 function isNodeOnline (url) {
   return new Promise((resolve, reject) => {
-    const er = utils.checkUrl(url);
+    let er = utils.checkUrl(url);
+
+    if (!er && !/^(http:|https:)/.test(url)) {
+      er = new Error('invalid protocol, must be https or http');
+    }
 
     if (er) {
+      er.type = 'EUSAGE';
       return reject(er);
     }
     const cleanedUrl = utils.removeUsernamePw(url);
