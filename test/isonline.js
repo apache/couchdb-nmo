@@ -86,6 +86,14 @@ lab.experiment('isonline', () => {
         });
     });
 
+    lab.test('returns an error for non http urls', (done) => {
+      isonline('ftp://127.0.0.1:65516')
+        .catch((err) => {
+          assert.ok(err instanceof Error);
+          done();
+        });
+    });
+
     lab.test('returns false for down site with bad DNS', (done) => {
       isonline('http://exampleneverexists')
         .then((res) => {

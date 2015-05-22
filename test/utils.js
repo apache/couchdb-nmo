@@ -98,3 +98,17 @@ lab.experiment('utils: send json to node', () => {
       });
   });
 });
+
+lab.experiment('utils: removeUsernamePw', () => {
+  lab.test('removes credentials', (done) => {
+    var res = utils.removeUsernamePw('https://foo:bar@example.com');
+    assert.equal(res, 'https://USER:PW@example.com/');
+    done();
+  });
+
+  lab.test('keeps other urls valid', (done) => {
+    var res = utils.removeUsernamePw('https://example.com');
+    assert.equal(res, 'https://example.com/');
+    done();
+  });
+});

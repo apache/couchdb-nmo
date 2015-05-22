@@ -20,11 +20,11 @@ export function createTestServers () {
 }
 
 export function stopTestServers (servers) {
-  const servers = servers.map((s) => {
+  const s = servers.map((s) => {
     const close = Promise.promisify(s.close).bind(s);
     return close();
   });
-  return Promise.all(servers);
+  return Promise.all(s);
 }
 
 export function createTestServer (port) {

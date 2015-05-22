@@ -48,7 +48,7 @@
   "devDependencies": {
     "babel": "^5.1.10",
     "lab": "~5.5.1",
-    "lab-babel": "~1.0.0",
+    "lab-babel": "1.0.0",
     "less": "~2.5.0",
     "marked-man": "~0.1.4",
     "node-doc-generator": "robertkowalski/node-documentation-generator#sloppy"
