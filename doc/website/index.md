@@ -1,10 +1,8 @@
 ## how to use nmo?
 
-Take a look at our video
+Take a look at the video:
 
-<iframe>
-
-</iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/V_nChYFPixc" frameborder="0" allowfullscreen></iframe>
 
 ### Content from the video
 
