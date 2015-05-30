@@ -1,4 +1,11 @@
-## how to use nmo?
+## Install nmo
+
+```
+# you need to have node installed
+npm install -g nmo
+```
+
+## How to use nmo?
 
 Take a look at the video:
 
