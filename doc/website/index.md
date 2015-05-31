@@ -23,10 +23,10 @@ nmo cluster add node2 http://foo:bar@localhost:25984 anemone
 nmo cluster add node3 http://foo:bar@localhost:35984 anemone
 
 # check config
-nmo cluster
+nmo cluster get
 
 # we support json!
-nmo cluster --json
+nmo cluster get --json
 nmo isonline http://foo:bar@localhost:15984 --json
 
 # join cluster
