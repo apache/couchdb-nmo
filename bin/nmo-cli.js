@@ -9,7 +9,7 @@ var nmo = require('../lib/nmo.js');
 var parsed = nopt({
   'json': [Boolean],
   'force': [Boolean]
-}, {}, process.argv, 2);
+}, {'v': 'v'}, process.argv, 2);
 
 var cmd = parsed.argv.remain.shift();
 

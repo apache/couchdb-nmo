@@ -1,11 +1,13 @@
 import * as config from './config.js';
 import Promise from 'bluebird';
+import pkg from '../package.json'
 
 const commands = [
   'isonline',
   'help',
   'config',
-  'cluster'
+  'cluster',
+  'v'
 ];
 
 const nmo = {
@@ -29,6 +31,8 @@ Object.defineProperty(nmo, 'cli', {
     return cliFuncs;
   }
 });
+
+nmo.version = pkg.version;
 
 const commandFuncs = {}, cliFuncs = {};
 nmo.load = function load (opts) {

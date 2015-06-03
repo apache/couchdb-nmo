@@ -43,4 +43,12 @@ lab.experiment('nmo', () => {
       done();
     });
   });
+
+  lab.test('has a version property', (done) => {
+    nmo.config = null;
+    nmo.load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
+      assert.ok(nmo.version);
+      done();
+    });
+  });
 });

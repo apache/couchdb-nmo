@@ -16,7 +16,8 @@ ${cmds}
 Get help for a command:
 
 nmo help <command>
-`;
+
+nmo@${nmo.version}`;
 }
 
 export default help;
