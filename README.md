@@ -12,3 +12,8 @@ npm install -g nmo
 
 It is written in ES6 and is using promises and generators for control
 flow. We are aiming for 100% test coverage.
+
+
+## Help
+
+[http://robertkowalski.github.io/nmo/](http://robertkowalski.github.io/nmo/)
