@@ -62,14 +62,6 @@ lab.experiment('isonline', () => {
       });
     });
 
-    lab.test('rejects the promise for connection errors', (done) => {
-      isonline(common.NODE + '/socketclose')
-        .catch((err) => {
-          assert.ok(err instanceof Error);
-          done();
-        });
-    });
-
     lab.test('returns error for all other errors', (done) => {
       isonline({})
         .catch((err) => {

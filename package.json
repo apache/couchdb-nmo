@@ -30,8 +30,8 @@
     "nopt": "~3.0.1",
     "npmlog": "~1.2.0",
     "osenv": "~0.1.0",
-    "request": "~2.55.0",
     "valid-url": "~1.0.9",
+    "wreck": "~5.6.0",
     "xtend": "~4.0.0"
   },
   "bundleDependencies": [
@@ -41,8 +41,8 @@
     "nopt",
     "npmlog",
     "osenv",
-    "request",
     "valid-url",
+    "wreck",
     "xtend"
   ],
   "devDependencies": {

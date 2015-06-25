@@ -1,6 +1,6 @@
 import * as utils from './utils.js';
 import log from 'npmlog';
-import request from 'request';
+import Wreck from 'wreck';
 import Promise from 'bluebird';
 import nmo from './nmo.js';
 
@@ -73,8 +73,7 @@ function isNodeOnline (url) {
     const cleanedUrl = utils.removeUsernamePw(url);
     log.http('request', 'GET', cleanedUrl);
 
-    request(url, (err, res, body) => {
-
+    Wreck.get(url, (err, res, payload) => {
       if (err && (err.code === 'ECONNREFUSED'
         || err.code === 'ENOTFOUND')) {
         return resolve({[url]: false});

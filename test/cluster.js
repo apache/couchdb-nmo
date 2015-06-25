@@ -31,14 +31,6 @@ node2=${common.NODE_TWO}
 [clustervalidurlswithpw]
 node1=${common.NODE_WITH_PW}
 node2=${common.NODE_TWO_WITH_PW}
-
-[clustervalidurlsclosingsocket]
-node1=${common.NODE}
-node2=${common.NODE_TWO + '/socketclose'}
-
-[clustervalidurlsclosingsocketaftercheck]
-node1=${common.NODE}
-node2=${common.NODE_TWO + '/socket_close_on_second_request'}
 `;
 
 const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
@@ -129,7 +121,6 @@ lab.experiment('cluster - join', () => {
       done();
     });
   });
-
 
   lab.test('errors on empty args', (done) => {
     nmo.load(nmoconf).then(() => {
@@ -230,28 +221,8 @@ lab.experiment('cluster - join', () => {
     });
   });
 
-  lab.test('rejects on connection errors', (done) => {
-    nmo.load(nmoconf).then(() => {
-      cluster
-        .join('clustervalidurlsclosingsocket')
-        .catch((err) => {
-          assert.ok(err instanceof Error);
-          done();
-        });
-    });
-  });
-
-  lab.test('rejects on connection errors during join', (done) => {
-    nmo.load(nmoconf).then(() => {
-      cluster
-        .join('clustervalidurlsclosingsocketaftercheck')
-        .catch((err) => {
-          assert.ok(err instanceof Error);
-          done();
-        });
-    });
-  });
 });
+
 
 lab.experiment('cluster - cli', () => {
 

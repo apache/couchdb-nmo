@@ -3,7 +3,7 @@
 import assert from 'assert';
 
 import {isUri as checkUri} from 'valid-url';
-import request from 'request';
+import Wreck from 'wreck';
 import Promise from 'bluebird';
 import log from 'npmlog';
 import url from 'url';
@@ -29,12 +29,7 @@ export function sendJsonToNode (url, json) {
     const cleanedUrl = removeUsernamePw(url);
     log.http('request', 'POST', cleanedUrl);
 
-    request({
-      method: 'POST',
-      uri: url,
-      json: true,
-      body: json
-    }, (err, res, body) => {
+    Wreck.post(url, {payload: JSON.stringify(json), json: true}, (err, res, body) => {
       if (err) {
         return reject(err);
       }

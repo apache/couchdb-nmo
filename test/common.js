@@ -31,16 +31,6 @@ export function createTestServer (port) {
   let i = 0;
   return new Promise((resolve) => {
     const s = http.createServer((req, res) => {
-      if (req.url === '/socketclose') {
-        res.write('a');
-      }
-
-      if (req.url === '/socket_close_on_second_request') {
-        i++;
-        if (i === 1) {
-          res.write('a');
-        }
-      }
 
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify({ok: true}));
