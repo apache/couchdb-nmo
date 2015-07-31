@@ -296,14 +296,16 @@ lab.experiment('config', () => {
     });
 
     lab.test('returns error on wrong usage', (done) => {
-      nmo.load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
-        config
-          .cli('lalala')
-      })
-      .catch((err) => {
-        assert.ok(err instanceof Error);
-        done();
-      });
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
+        .then(() => {
+
+          config
+            .cli('lalala');
+
+        }).catch((err) => {
+          assert.ok(err instanceof Error);
+          done();
+        });
     });
   });
 

@@ -13,7 +13,7 @@ const oldConsole = console.log;
 lab.experiment('help', () => {
 
   lab.before((done) => {
-    load().then(() => {
+    load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
       done();
     });
   });

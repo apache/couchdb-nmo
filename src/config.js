@@ -1,13 +1,10 @@
 import cc from 'config-chain';
 import ini from 'ini';
-import fs from 'fs';
 import xtend from 'xtend';
 import Promise from 'bluebird';
-import osenv from 'osenv';
 
 import nmo from './nmo.js';
 
-const readFile = Promise.promisify(fs.readFile);
 let cfg;
 
 
@@ -38,20 +35,11 @@ export function cli (cmd, ...args) {
 
 export const load = function load (nopts = {nmoconf: '.nmorc'}) {
   return new Promise((resolve, reject) => {
-    let confFile = cc.find(nopts.nmoconf);
-
-    if (!confFile) {
-      const home = osenv.home();
-      fs.writeFileSync(home + '/.nmorc', '');
-    }
-
-    confFile = cc.find(nopts.nmoconf);
-
     cfg = cc(nopts)
-      .addFile(confFile, 'ini', 'config')
+      .addFile(nopts.nmoconf, 'ini', 'config')
       .on('load', () => {
         resolve(cfg);
-      });
+      }).on('error', reject);
   });
 };
 

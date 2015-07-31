@@ -3,7 +3,9 @@
 var nopt = require('nopt');
 var log = require('npmlog');
 var xtend = require('xtend');
-var pkg = require('../package.json')
+var pkg = require('../package.json');
+var osenv = require('osenv');
+var fs = require('fs');
 
 var nmo = require('../lib/nmo.js');
 var parsed = nopt({
@@ -12,8 +14,14 @@ var parsed = nopt({
 }, {'v': 'v'}, process.argv, 2);
 
 var cmd = parsed.argv.remain.shift();
+var home = osenv.home();
 
-parsed.nmoconf = '.nmorc';
+parsed.nmoconf = home + '/' + '.nmorc';
+
+if (!fs.existsSync(parsed.nmoconf)) {
+  fs.writeFileSync(parsed.nmoconf, '');
+}
+
 nmo.load(parsed).then(function (conf) {
 
   if (!cmd || !nmo.cli[cmd]) {
