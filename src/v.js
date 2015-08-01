@@ -1,4 +1,5 @@
 import nmo from './nmo.js';
+import Promise from 'bluebird';
 
 
 export default version;
