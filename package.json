@@ -7,7 +7,8 @@
   "scripts": {
     "transpile": "babel src -d lib",
     "prepublish": "make && npm run transpile",
-    "test": "lab -v --transform node_modules/lab-babel -t 100 -S"
+    "test": "lab -v --transform node_modules/lab-babel -t 100 -S",
+    "lint": "jshint ./src ./test"
   },
   "author": "Robert Kowalski <rok@kowalski.gd>",
   "license": "Apache 2.0",
@@ -25,8 +26,12 @@
   },
   "dependencies": {
     "bluebird": "~2.9.24",
+    "bulkbadger": "^1.0.0",
     "config-chain": "~1.1.8",
+    "couchbulkimporter": "^1.0.0",
+    "csv-parse": "^1.0.0",
     "ini": "~1.3.3",
+    "lodash": "^3.10.1",
     "nopt": "~3.0.1",
     "npmlog": "~1.2.0",
     "osenv": "~0.1.0",
@@ -47,10 +52,12 @@
   ],
   "devDependencies": {
     "babel": "^5.1.10",
+    "jshint": "^2.8.0",
     "lab": "~5.5.1",
     "lab-babel": "1.0.0",
     "less": "~2.5.0",
     "marked-man": "~0.1.4",
+    "nock": "^2.10.0",
     "node-doc-generator": "robertkowalski/node-documentation-generator#sloppy"
   }
 }

@@ -7,7 +7,8 @@ const commands = [
   'help',
   'config',
   'cluster',
-  'v'
+  'v',
+  'import-csv'
 ];
 
 const nmo = {

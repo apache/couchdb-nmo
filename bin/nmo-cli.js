@@ -10,7 +10,9 @@ var fs = require('fs');
 var nmo = require('../lib/nmo.js');
 var parsed = nopt({
   'json': [Boolean],
-  'force': [Boolean]
+  'force': [Boolean],
+  'delimiter': [String],
+  'columns': [Boolean]
 }, {'v': 'v'}, process.argv, 2);
 
 var cmd = parsed.argv.remain.shift();
