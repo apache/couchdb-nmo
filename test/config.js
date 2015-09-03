@@ -11,8 +11,8 @@ import fs from 'fs';
 
 
 const data = `[clusterone]
-node0=127.0.0.1
-node1=192.168.0.1
+node0=http://127.0.0.1
+node1=http://192.168.0.1
 
 [gang]
 rocko=artischocko
@@ -29,8 +29,8 @@ const jsonData = {
     "mussman": "dermussmaen"
   },
   "clusterone": {
-    "node0": "127.0.0.1",
-    "node1": "192.168.0.1"
+    "node0": "http://127.0.0.1",
+    "node1": "http://192.168.0.1"
   }
 };
 
@@ -74,7 +74,7 @@ lab.experiment('config', () => {
         .then((res) => {
           config.set('cluster1337', 'node1337', '192.168.133.7').then((e) => {
             const c = ini.parse(fs.readFileSync(__dirname + '/fixtures/randomini', 'utf-8'));
-            assert.equal(c.clusterone.node1, '192.168.0.1');
+            assert.equal(c.clusterone.node1, 'http://192.168.0.1');
             assert.equal(c.gang.rocko, 'artischocko');
             assert.equal(c.cluster1337.node1337, '192.168.133.7');
             done();
@@ -287,7 +287,7 @@ lab.experiment('config', () => {
         .then((res) => {
           config.cli('set', 'cluster1337', 'node1337', '192.168.133.7').then((e) => {
             const c = ini.parse(fs.readFileSync(__dirname + '/fixtures/randomini', 'utf-8'));
-            assert.equal(c.clusterone.node1, '192.168.0.1');
+            assert.equal(c.clusterone.node1, 'http://192.168.0.1');
             assert.equal(c.gang.rocko, 'artischocko');
             assert.equal(c.cluster1337.node1337, '192.168.133.7');
             done();
@@ -310,4 +310,3 @@ lab.experiment('config', () => {
   });
 
 });
-

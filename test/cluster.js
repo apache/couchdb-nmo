@@ -10,8 +10,8 @@ import * as common from './common.js';
 import fs from 'fs';
 
 const data = `[clusterone]
-node0=127.0.0.1
-node1=192.168.0.1
+node0=http://127.0.0.1
+node1=http://192.168.0.1
 
 [onenodecluster]
 node1=iamalonelylnode
@@ -55,7 +55,7 @@ lab.experiment('cluster - get', () => {
       cluster
         .get('clusterone', 'node0')
         .then((res) => {
-          assert.equal(res, '127.0.0.1');
+          assert.equal(res, 'http://127.0.0.1');
           done();
         });
     });

@@ -2,12 +2,12 @@ import assert from 'assert';
 import Lab from 'lab';
 
 import isonline from '../src/isonline.js';
-import {cli} from '../src/isonline.js';
+import {cli, getClusterUrls } from '../src/isonline.js';
 
 import * as common from './common.js';
-import log from 'npmlog';
 import nmo from '../src/nmo.js';
 
+import nock from 'nock';
 
 export let lab = Lab.script();
 const oldConsole = console.log;
@@ -41,8 +41,60 @@ lab.experiment('isonline', () => {
           done();
         });
     });
-  });
 
+    lab.test('executes correct url for cluster name', (done) => {
+      nock('http://127.0.0.1')
+        .get('/')
+        .reply(200);
+
+      nock('http://192.168.0.1')
+        .get('/')
+        .reply(200);
+
+      nmo
+        .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
+        .then(() => {
+          return cli('clusterone');
+        }).then(res => {
+          assert.deepEqual(res, {'http://127.0.0.1': true, 'http://192.168.0.1': true });
+          done();
+        });
+    });
+
+    lab.test('still executes for urls', (done) => {
+     nock('http://127.0.0.1')
+       .get('/')
+       .reply(200);
+
+     nmo
+       .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
+       .then(() => {
+         return cli('http://127.0.0.1');
+       }).then(res => {
+         assert.deepEqual(res, {'http://127.0.0.1': true });
+         done();
+       });
+     });
+
+     lab.test('executes correct for multiple urls', (done) => {
+       nock('http://127.0.0.1')
+         .get('/')
+         .reply(200);
+
+       nock('http://192.168.0.1')
+         .get('/')
+         .reply(200);
+
+       nmo
+         .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
+         .then(() => {
+           return cli('http://127.0.0.1', 'http://192.168.0.1');
+         }).then(res => {
+           assert.deepEqual(res, {'http://127.0.0.1': true, 'http://192.168.0.1': true });
+           done();
+         });
+     });
+  });
 
   lab.experiment('api', () => {
     lab.beforeEach((done) => {
@@ -60,6 +112,26 @@ lab.experiment('isonline', () => {
       common.stopTestServers(servers).then((res) => {
         done();
       });
+    });
+
+    lab.test('getClustersUrl returns correct urls', (done) => {
+      nmo
+        .load({nmoconf: __dirname + '/fixtures/randomini'})
+        .then(() => {
+          const urls = getClusterUrls('clusterone');
+          assert.deepEqual(['http://127.0.0.1', 'http://192.168.0.1'], urls);
+          done();
+        });
+    });
+
+    lab.test("getClustersUrl throws an error if the cluster doesn't exist", (done) => {
+        try {
+          getClusterUrls('doesnt-exist');
+        } catch(e) {
+          assert.ok(/Cluster does not exist/.test(e.message));
+          done();
+        }
+
     });
 
     lab.test('returns error for all other errors', (done) => {
@@ -138,7 +210,7 @@ lab.experiment('isonline', () => {
         assert.ok(/online/.test(args[1]), 'returns online for online nodes');
         done();
       };
-      nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
+      nmo.load({nmoconf: __dirname + '/fixtures/randomini', json: false})
         .then(() => {
           cli(common.NODE);
         });

@@ -15,6 +15,10 @@ function isOnlineCli (...urls) {
       return reject(err);
     }
 
+    if (urls.length === 1 && !utils.isUri(urls[0])) {
+      urls = getClusterUrls(urls[0]);
+    }
+
     isonline.apply(isonline, urls)
       .then((results) => {
         const jsonOut = nmo.config.get('json');
@@ -37,6 +41,15 @@ function isOnlineCli (...urls) {
   });
 }
 
+export function getClusterUrls (clusterName) {
+  const nodes = nmo.config.get(clusterName);
+  if (!nodes) {
+    const err = new Error('Cluster does not exist');
+    err.type = 'EUSAGE';
+    throw err;
+  }
+  return Object.keys(nodes).map(key => nodes[key]);
+}
 
 export default isonline;
 function isonline (...args) {
