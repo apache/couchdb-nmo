@@ -8,7 +8,8 @@ const commands = [
   'config',
   'cluster',
   'v',
-  'import-csv'
+  'import-csv',
+  'couch-config'
 ];
 
 const nmo = {
