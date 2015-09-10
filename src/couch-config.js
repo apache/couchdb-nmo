@@ -10,7 +10,14 @@ export function cli (cmd, cluster, section, key, value) {
   return new Promise((resolve, reject) => {
 
     if (!cmd || !cluster || !exports[cmd]) {
-      const err = new Error('Usage: nmo couch-config add/set <cluster> ...');
+      const msg = [
+        'Usage:',
+        '',
+        'nmo couch-config get <cluster> [<section>] [--json]',
+        'nmo config-config set <cluster> <section>, <key>, <value>'
+      ].join('\n');
+
+      const err = new Error(msg);
       err.type = 'EUSAGE';
       return reject(err);
     }
@@ -88,11 +95,7 @@ export function set(cluster, nodes, section, key, value) {
 
 export function setConfig (node, url, value) {
   return new Promise((resolve, reject) => {
-    let er = utils.checkUrl(url);
-
-    if (!er && !/^(http:|https:)/.test(url)) {
-      er = new Error('invalid protocol, must be https or http');
-    }
+    let er = utils.validUrl(url);
 
     if (er) {
       er.type = 'EUSAGE';
@@ -134,11 +137,7 @@ export function buildConfigUrl (node, url, section, key) {
 
 export function getConfig (node, url) {
   return new Promise((resolve, reject) => {
-    let er = utils.checkUrl(url);
-
-    if (!er && !/^(http:|https:)/.test(url)) {
-      er = new Error('invalid protocol, must be https or http');
-    }
+    let er = utils.validUrl(url);
 
     if (er) {
       er.type = 'EUSAGE';

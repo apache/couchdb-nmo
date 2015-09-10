@@ -73,11 +73,7 @@ function isonline (...args) {
 
 function isNodeOnline (url) {
   return new Promise((resolve, reject) => {
-    let er = utils.checkUrl(url);
-
-    if (!er && !/^(http:|https:)/.test(url)) {
-      er = new Error('invalid protocol, must be https or http');
-    }
+    const er = utils.validUrl(url);
 
     if (er) {
       er.type = 'EUSAGE';
@@ -87,8 +83,7 @@ function isNodeOnline (url) {
     log.http('request', 'GET', cleanedUrl);
 
     Wreck.get(url, (err, res, payload) => {
-      if (err && (err.code === 'ECONNREFUSED'
-        || err.code === 'ENOTFOUND')) {
+      if (err && (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND')) {
         return resolve({[url]: false});
       }
 

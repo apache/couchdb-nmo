@@ -7,6 +7,23 @@ export const lab = Lab.script();
 import * as utils from '../src/utils.js';
 import * as common from './common.js';
 
+lab.experiment('utils: validUrl', () => {
+
+  lab.test('checks protocol of url', done => {
+    const err = utils.validUrl('ftp://wrong.com');
+
+    assert.ok(/invalid protocol/.test(err.message));
+    done();
+  });
+
+  lab.test('returns null if url is valid', done => {
+    const err = utils.validUrl('http://good.com');
+
+    assert.ok(err === null);
+    done();
+  });
+
+});
 
 lab.experiment('utils: uri', () => {
 

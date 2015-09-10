@@ -8,6 +8,16 @@ import Promise from 'bluebird';
 import log from 'npmlog';
 import url from 'url';
 
+export function validUrl (url) {
+  let er = checkUrl(url);
+
+  if (!er && !/^(http:|https:)/.test(url)) {
+    er = new Error('invalid protocol, must be https or http');
+  }
+
+  return er;
+}
+
 export function isUri (url) {
   return !!checkUri(url);
 }
