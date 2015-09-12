@@ -1,5 +1,5 @@
-nmo-couch-config(1) -- Set/Get couch configuration for a cluster
-=================================
+nmo-couch-config(1) -- Set/Get CouchDB configuration for a cluster
+==================================================================
 
 ## SYNOPSIS
 
@@ -15,8 +15,9 @@ If a key is specified it will only get the configuration for that section
 
 - set:
 
-Set the value for a given key of a section of the config. This will update the config for all nodes in a cluster.
-The cluster must be specified in the .nmorc file.
+Set the value for a given key of a section of the config. This will update
+the config for all nodes in a cluster. The cluster must be specified in the
+.nmorc file.
 
 ## EXAMPLE
 

@@ -4,7 +4,8 @@ import Lab from 'lab';
 export const lab = Lab.script();
 import nock from 'nock';
 import nmo from '../src/nmo.js';
-import {cli, importcsv} from '../src/import-csv.js';
+import {cli} from '../src/import-csv.js';
+import importcsv from '../src/import-csv.js';
 
 const docs = {
   "docs":[

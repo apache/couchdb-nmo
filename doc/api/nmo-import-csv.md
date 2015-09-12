@@ -1,9 +1,9 @@
-nmo-import-csv(3) -- configuration
-==============================
+nmo-import-csv(3) -- import csv
+===============================
 
 ## SYNOPSIS
 
-    nmo.commands.importcsv(file, url, [csvOptions])
+    nmo.commands['import-csv'](file, url, [csvOptions])
 
 
 
@@ -11,7 +11,7 @@ nmo-import-csv(3) -- configuration
 
 Import csv file into CouchDB
 
-  - importcsv:
+  - import-csv:
 
 Accepts the file, url and csv options to import a file into CouchDB.
 It returns a promise.

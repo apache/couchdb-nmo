@@ -28,7 +28,9 @@ export function cli (file, url, ...csvOptions) {
   return importcsv.apply(importcsv, [file, url, opts]);
 }
 
-export function importcsv (file, url, {delimiter= ',', columns= true}) {
+
+export default importcsv;
+function importcsv (file, url, {delimiter= ',', columns= true}) {
   return new Promise((resolve, reject) => {
     const input = fs.createReadStream(file)
                   .on('error', (err) => {
