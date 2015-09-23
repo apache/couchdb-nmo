@@ -39,7 +39,15 @@ export function sendJsonToNode (url, json) {
     const cleanedUrl = removeUsernamePw(url);
     log.http('request', 'POST', cleanedUrl);
 
-    Wreck.post(url, {payload: JSON.stringify(json), json: true}, (err, res, body) => {
+    const opts = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      payload: JSON.stringify(json),
+      json: true,
+    };
+
+    Wreck.post(url, opts, (err, res, body) => {
       if (err) {
         return reject(err);
       }

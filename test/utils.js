@@ -1,5 +1,6 @@
 import assert from 'assert';
 import http from 'http';
+import nock from 'nock';
 
 import Lab from 'lab';
 export const lab = Lab.script();
@@ -58,9 +59,7 @@ lab.experiment('utils: checkUrl', () => {
   });
 });
 
-
 lab.experiment('utils: send json to node', () => {
-
   let data = '', server;
 
   lab.before((done) => {
@@ -114,6 +113,23 @@ lab.experiment('utils: send json to node', () => {
         done();
       });
   });
+
+  lab.test('sets "Content-Type" as "application/json"', done => {
+    const url = 'http://content-type.test';
+    const body = {test: true};
+    nock(url,{
+      reqheaders: {
+        'content-type': 'application/json'
+      }
+    })
+    .post('/')
+    .reply(200);
+
+    utils.sendJsonToNode(url +'/', body)
+    .then(res => { done(); });
+  });
+
+
 });
 
 lab.experiment('utils: removeUsernamePw', () => {
