@@ -49,6 +49,13 @@ export function get (cluster, nodes, section) {
   }, {});
 
   promise.then((nodeConfigs) => {
+    const jsonOut = nmo.config.get('json');
+
+    if (jsonOut) {
+      console.log(nodeConfigs);
+      return nodeConfigs;
+    }
+
     Object.keys(nodeConfigs).forEach(node => {
       console.log('NODE:', node);
       console.log(prettyjson.render(nodeConfigs[node], {}));
@@ -148,6 +155,14 @@ export function getConfig (node, url) {
 
     Wreck.get(url, (err, res, payload) => {
       if (err) {
+        if (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND') {
+          const noNodeErr = new Error('Could not find node ' + node +
+            ' this could mean the node is down.');
+          noNodeErr.type = 'EUSAGE';
+          return reject(noNodeErr);
+        }
+
+        err.type = 'EUSAGE';
         return reject(err);
       }
 

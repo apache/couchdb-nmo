@@ -98,7 +98,7 @@ lab.experiment('couch-config', () => {
     lab.test('gets config bad url returns false', (done) => {
       getConfig('node1', 'http://127.0.0.2/')
       .catch(err => {
-        assert.deepEqual(err.code, 'ECONNREFUSED');
+        assert.ok(/Could not find node/.test(err.message));
         done();
       });
     });
@@ -159,7 +159,33 @@ lab.experiment('couch-config', () => {
       });
     });
 
-    lab.test('get prints config', (done) => {
+    lab.test('get returns json if set', done => {
+      const nodes = {
+        node1: 'http://127.0.0.100'
+      };
+
+      const resp = {
+        config1: 'hello',
+        config2: 'boom'
+      };
+
+      nock('http://127.0.0.100')
+        .get('/_node/node1/_config/uuid')
+        .reply(200, resp);
+
+      nmo
+        .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
+        .then(() => {
+
+          get('cluster', nodes, 'uuid')
+          .then(jsonresp => {
+            assert.deepEqual({node1: resp}, jsonresp);
+            done();
+          });
+        });
+    });
+
+    lab.test('get prints config', done => {
       const nodes = {
         node1: 'http://127.0.0.1'
       };
