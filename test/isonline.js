@@ -11,27 +11,24 @@ import nock from 'nock';
 
 export let lab = Lab.script();
 const oldConsole = console.log;
+const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
+
+common.createConfigFile();
 
 lab.experiment('isonline', () => {
 
-  let servers, conf;
-
   lab.experiment('cli', () => {
     lab.beforeEach((done) => {
-      conf = {nmoconf: __dirname + '/fixtures/randomini'};
+      nmo
+        .load(nmoconf)
+        .then(() => done())
+        .catch(() => done());
 
-      common.createTestServers().done((s) => {
-        servers = s;
-        done();
-      });
     });
 
     lab.afterEach((done) => {
       console.log = oldConsole;
-
-      common.stopTestServers(servers).then((res) => {
-        done();
-      });
+      done();
     });
 
     lab.test('returns error on no value provided', (done) => {
@@ -51,11 +48,8 @@ lab.experiment('isonline', () => {
         .get('/')
         .reply(200);
 
-      nmo
-        .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
-        .then(() => {
-          return cli('clusterone');
-        }).then(res => {
+      cli('clusterone')
+        .then(res => {
           assert.deepEqual(res, {'http://127.0.0.1': true, 'http://192.168.0.1': true });
           done();
         });
@@ -97,41 +91,20 @@ lab.experiment('isonline', () => {
   });
 
   lab.experiment('api', () => {
+    //I'm worried these before's are not actually running
     lab.beforeEach((done) => {
-      conf = {nmoconf: __dirname + '/fixtures/randomini'};
-
-      common.createTestServers().done((s) => {
-        servers = s;
-        done();
+      nmo
+        .load(nmoconf)
+        .then(() => {
+          done();
+        })
+        .catch(() => done());
       });
     });
 
     lab.afterEach((done) => {
       console.log = oldConsole;
-
-      common.stopTestServers(servers).then((res) => {
-        done();
-      });
-    });
-
-    lab.test('getClustersUrl returns correct urls', (done) => {
-      nmo
-        .load({nmoconf: __dirname + '/fixtures/randomini'})
-        .then(() => {
-          const urls = getClusterUrls('clusterone');
-          assert.deepEqual(['http://127.0.0.1', 'http://192.168.0.1'], urls);
-          done();
-        });
-    });
-
-    lab.test("getClustersUrl throws an error if the cluster doesn't exist", (done) => {
-        try {
-          getClusterUrls('doesnt-exist');
-        } catch(e) {
-          assert.ok(/Cluster does not exist/.test(e.message));
-          done();
-        }
-
+      done();
     });
 
     lab.test('returns error for all other errors', (done) => {
@@ -167,6 +140,10 @@ lab.experiment('isonline', () => {
     });
 
     lab.test('returns true for online site', (done) => {
+      nock(common.NODE)
+        .get('/')
+        .reply(200);
+
       isonline(common.NODE)
         .then((res) => {
           assert.deepEqual(res, {[common.NODE]: true});
@@ -175,6 +152,14 @@ lab.experiment('isonline', () => {
     });
 
     lab.test('accepts multiple sites and options', (done) => {
+      nock(common.NODE)
+        .get('/')
+        .reply(200);
+
+      nock(common.NODE_TWO)
+        .get('/')
+        .reply(200);
+
       nmo
         .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then(() => {
@@ -187,25 +172,22 @@ lab.experiment('isonline', () => {
           });
         });
     });
-  });
 
   lab.experiment('cli', () => {
     lab.beforeEach((done) => {
-      conf = {nmoconf: __dirname + '/fixtures/randomini'};
-
-      common.createTestServers().done((s) => {
-        servers = s;
-        done();
-      });
+      done();
     });
+
     lab.afterEach((done) => {
       console.log = oldConsole;
-
-      common.stopTestServers(servers).then((res) => {
-        done();
-      });
+      done();
     });
+
     lab.test('returns online for online nodes', (done) => {
+      nock(common.NODE)
+        .get('/')
+        .reply(200);
+
       console.log = (...args) => {
         assert.ok(/online/.test(args[1]), 'returns online for online nodes');
         done();
@@ -228,6 +210,9 @@ lab.experiment('isonline', () => {
     });
 
     lab.test('can output json', (done) => {
+      nock(common.NODE)
+        .get('/')
+        .reply(200);
 
       console.log = (...args) => {
         assert.deepEqual({ [common.NODE]: true }, args[0]);

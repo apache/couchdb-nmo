@@ -2,9 +2,7 @@ import * as config from './config.js';
 import nmo from './nmo.js';
 import isonline from './isonline.js';
 
-import xtend from 'xtend';
 import Promise from 'bluebird';
-import log from 'npmlog';
 
 import * as utils from './utils';
 import url from 'url';
@@ -32,7 +30,7 @@ export function cli (cmd, ...args) {
   }
 
   return cmdCommands[cmd].apply(exports[cmd], args);
-};
+}
 
 function joinCli (cluster) {
   return new Promise((resolve, reject) => {

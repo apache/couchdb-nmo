@@ -1,6 +1,10 @@
+//This needs to go here so that the polyfill
+//is used when the cli loads and the tests
+require('babel/polyfill');
+
 import * as config from './config.js';
 import Promise from 'bluebird';
-import pkg from '../package.json'
+import pkg from '../package.json';
 
 const commands = [
   'isonline',
@@ -9,12 +13,16 @@ const commands = [
   'cluster',
   'v',
   'import-csv',
-  'couch-config'
+  'couch-config',
+  'activetasks'
 ];
 
 const nmo = {
   config: null
 };
+
+nmo.version = pkg.version;
+const commandFuncs = {}, cliFuncs = {};
 
 Object.defineProperty(nmo, 'commands', {
   get: () => {
@@ -34,9 +42,6 @@ Object.defineProperty(nmo, 'cli', {
   }
 });
 
-nmo.version = pkg.version;
-
-const commandFuncs = {}, cliFuncs = {};
 nmo.load = function load (opts) {
   return new Promise((resolve, reject) => {
     config

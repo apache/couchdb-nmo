@@ -3,10 +3,13 @@ import assert from 'assert';
 import Lab from 'lab';
 export const lab = Lab.script();
 import nock from 'nock';
+import { createConfigFile } from './common';
 import nmo from '../src/nmo.js';
 import {cli, setConfig, getClusterNodes, buildConfigUrl, getConfig, get, set} from '../src/couch-config.js';
 
 lab.experiment('couch-config', () => {
+  createConfigFile();
+
   lab.beforeEach((done) => {
     nmo
       .load({nmoconf: __dirname + '/fixtures/randomini'})

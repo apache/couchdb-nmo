@@ -7,7 +7,7 @@
   "scripts": {
     "transpile": "babel src -d lib",
     "prepublish": "make && npm run transpile",
-    "test": "lab -v --transform node_modules/lab-babel -t 100 -S",
+    "test": "lab -v --transform node_modules/lab-babel -S -I core,_babelPolyfill,regeneratorRuntime,__core-js_shared__,Reflect",
     "lint": "jshint ./src ./test"
   },
   "author": "Robert Kowalski <rok@kowalski.gd>",

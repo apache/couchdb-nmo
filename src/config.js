@@ -3,10 +3,7 @@ import ini from 'ini';
 import xtend from 'xtend';
 import Promise from 'bluebird';
 
-import nmo from './nmo.js';
-
 let cfg;
-
 
 export function cli (cmd, ...args) {
   if (!cmd) {
@@ -31,7 +28,7 @@ export function cli (cmd, ...args) {
   }
 
   return exports[cmd].apply(exports[cmd], args);
-};
+}
 
 export const load = function load (nopts = {nmoconf: '.nmorc'}) {
   return new Promise((resolve, reject) => {
@@ -76,8 +73,7 @@ export function get (section, key) {
   }
 
   return res;
-};
-
+}
 
 export function cliGet (section, key) {
   return new Promise((resolve, reject) => {
@@ -86,10 +82,10 @@ export function cliGet (section, key) {
 
     return resolve(res);
   });
-};
+}
 
 export function handleResult (data, key) {
-  const jsonOut = nmo.config.get('json');
+  let jsonOut = cfg.get('json');
 
   if (typeof data === 'string') {
     if (jsonOut) {
@@ -115,4 +111,4 @@ export function handleResult (data, key) {
   console.log(parsed);
 
   return data;
-};
+}

@@ -3,6 +3,7 @@ import assert from 'assert';
 import Lab from 'lab';
 export const lab = Lab.script();
 
+import { createConfigFile } from './common';
 import help from '../src/help.js';
 import {cli} from '../src/help.js';
 
@@ -11,6 +12,7 @@ import {load} from '../src/nmo.js';
 const oldConsole = console.log;
 
 lab.experiment('help', () => {
+  createConfigFile();
 
   lab.before((done) => {
     load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {

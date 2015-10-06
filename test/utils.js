@@ -1,5 +1,4 @@
 import assert from 'assert';
-import http from 'http';
 import nock from 'nock';
 
 import Lab from 'lab';
@@ -7,6 +6,10 @@ export const lab = Lab.script();
 
 import * as utils from '../src/utils.js';
 import * as common from './common.js';
+import nmo from '../src/nmo.js';
+
+const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
+common.createConfigFile();
 
 lab.experiment('utils: validUrl', () => {
 
@@ -24,6 +27,48 @@ lab.experiment('utils: validUrl', () => {
     done();
   });
 
+});
+
+lab.experiment('utils: getClusterUrls', () => {
+
+  lab.test('getClustersUrl returns correct urls', (done) => {
+    nmo
+      .load(nmoconf)
+      .then(() => {
+      const urls = utils.getClusterUrls('clusterone');
+      assert.deepEqual(['http://127.0.0.1', 'http://192.168.0.1'], urls);
+      done();
+    });
+  });
+
+  lab.test("getClustersUrl throws an error if the cluster doesn't exist", (done) => {
+    nmo
+      .load(nmoconf)
+      .then(() => {
+        return utils.getClusterUrls('doesnt-exist');
+      })
+      .catch(e => {
+        assert.ok(/Cluster does not exist/.test(e.message));
+        done();
+      });
+  });
+
+});
+
+lab.experiment('utils: getUrlFromCluster', () => {
+
+  lab.test('it returns url for url passed to it', done => {
+    const url = 'http://127.0.0.1';
+    const out = utils.getUrlFromCluster(url);
+    assert.deepEqual(url, out);
+    done();
+  });
+
+  lab.test('returns url for cluster', done => {
+    const out = utils.getUrlFromCluster('clusterone');
+    assert.deepEqual('http://127.0.0.1', out);
+    done();
+  });
 });
 
 lab.experiment('utils: uri', () => {
@@ -60,22 +105,6 @@ lab.experiment('utils: checkUrl', () => {
 });
 
 lab.experiment('utils: send json to node', () => {
-  let data = '', server;
-
-  lab.before((done) => {
-    server = http.createServer((req, res) => {
-      res.writeHead(200, {'Content-Type': 'application/json'});
-
-      req.on('data', (chunk) => {
-        data += chunk;
-      });
-      res.end('{"msg": "hi rocko artischocko!"}');
-    }).listen(common.PORT, '127.0.0.1', done);
-  });
-
-  lab.after((done) => {
-    server.close(done);
-  });
 
   lab.test('returns error on no value provided', (done) => {
     utils
@@ -105,11 +134,14 @@ lab.experiment('utils: send json to node', () => {
   });
 
   lab.test('communicates with the server', (done) => {
+    nock('http://127.0.0.1:1337')
+      .post('/')
+      .reply(200, {ok: true, msg: 'hello'});
+
     utils
       .sendJsonToNode(common.NODE, {'ok': 'true'})
       .then((res) => {
-      assert.equal(data, '{"ok":"true"}');
-        assert.equal(res.msg, 'hi rocko artischocko!');
+        assert.equal(res.msg, 'hello');
         done();
       });
   });

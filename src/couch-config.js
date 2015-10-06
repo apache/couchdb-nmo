@@ -4,7 +4,8 @@ import Wreck from 'wreck';
 import Promise from 'bluebird';
 import prettyjson from 'prettyjson';
 import nmo from './nmo.js';
-import isonline, { getClusterUrls } from './isonline.js';
+import isonline from './isonline.js';
+import { getClusterUrls } from './utils.js';
 
 export function cli (cmd, cluster, section, key, value) {
   return new Promise((resolve, reject) => {

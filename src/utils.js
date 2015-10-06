@@ -7,6 +7,7 @@ import Wreck from 'wreck';
 import Promise from 'bluebird';
 import log from 'npmlog';
 import url from 'url';
+import nmo from './nmo';
 
 export function validUrl (url) {
   let er = checkUrl(url);
@@ -68,4 +69,24 @@ export function removeUsernamePw (u) {
   const parsed = url.parse(u);
   parsed.auth = parsed.auth ? parsed.auth.replace(/.*:.*/, 'USER:PW') : parsed.auth;
   return url.format(parsed);
+}
+
+export function getUrlFromCluster(clusterName) {
+  const err = validUrl(clusterName);
+
+  if (err === null) {
+    return clusterName;
+  }
+
+  return getClusterUrls(clusterName)[0];
+}
+
+export function getClusterUrls (clusterName) {
+  const nodes = nmo.config.get(clusterName);
+  if (!nodes) {
+    const err = new Error('Cluster does not exist');
+    err.type = 'EUSAGE';
+    throw err;
+  }
+  return Object.keys(nodes).map(key => nodes[key]);
 }

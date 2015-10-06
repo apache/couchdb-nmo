@@ -3,6 +3,7 @@ import log from 'npmlog';
 import Wreck from 'wreck';
 import Promise from 'bluebird';
 import nmo from './nmo.js';
+import { getClusterUrls } from './utils';
 
 
 export const cli = isOnlineCli;
@@ -39,16 +40,6 @@ function isOnlineCli (...urls) {
         });
       }, reject);
   });
-}
-
-export function getClusterUrls (clusterName) {
-  const nodes = nmo.config.get(clusterName);
-  if (!nodes) {
-    const err = new Error('Cluster does not exist');
-    err.type = 'EUSAGE';
-    throw err;
-  }
-  return Object.keys(nodes).map(key => nodes[key]);
 }
 
 export default isonline;
