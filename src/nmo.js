@@ -14,7 +14,8 @@ const commands = [
   'v',
   'import-csv',
   'couch-config',
-  'activetasks'
+  'activetasks',
+  'savetofile'
 ];
 
 const nmo = {

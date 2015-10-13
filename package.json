@@ -25,6 +25,7 @@
     "website": "./website"
   },
   "dependencies": {
+    "JSONStream": "^1.0.6",
     "bluebird": "~2.9.24",
     "bulkbadger": "^1.0.0",
     "config-chain": "~1.1.8",
@@ -46,6 +47,7 @@
     "couchbulkimporter",
     "csv-parse",
     "ini",
+    "JSONStream",
     "nopt",
     "npmlog",
     "osenv",
