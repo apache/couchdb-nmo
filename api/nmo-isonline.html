@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>nmo Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a href="https://github.com/robertkowalski/nmo"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+  <div class="wrapper">
+    <header>
+      <h1>
+        <a href="../">nmo</a>
+      </h1>
+    </header>
+
+    <div class="content">
+      <h1>check if a cluster node is online<span><a class="mark" href="#nmo_isonline_md_nmo_isonline_3_check_if_a_cluster_node_is_online" id="nmo_isonline_md_nmo_isonline_3_check_if_a_cluster_node_is_online">#</a></span></h1>
+<h2>Synopsis<span><a class="mark" href="#nmo_isonline_md_synopsis" id="nmo_isonline_md_synopsis">#</a></span></h2>
+<pre><code>nmo.commands.isonline(url, [url], ...)
+nmo.commands.isonline(cluster,...)</code></pre>
+<h2>Description<span><a class="mark" href="#nmo_isonline_md_description" id="nmo_isonline_md_description">#</a></span></h2>
+<p>Check if nodes are online / available on the current network.
+
+</p>
+<p>url:
+The command takes multiple url arguments for checking multiple nodes
+at once. The url must be a <code>String</code>. The last argument must be an
+<code>Object</code> providing options.
+
+</p>
+<p>cluster:
+The command looks up the nodes defined in the config file for a given cluster
+and will check whether is node is online
+
+</p>
+<p>The command returns a promise which will return an <code>Object</code> where the
+keys are the provided urls and the values have the type <code>Boolean</code>.
+<code>true</code> indicates an online, available node.
+</p>
+
+    </div>
+
+    <footer>
+      <a href="https://github.com/robertkowalski/nmo">
+        Found a bug or typo? Want to contribute code?
+      </a>
+    </footer>
+  </div>
+  <nav class="toc-container">
+    <div class="toc section-toc">
+      <ul>
+<li><a href="#nmo_isonline_md_nmo_isonline_3_check_if_a_cluster_node_is_online">check if a cluster node is online</a><ul>
+<li><a href="#nmo_isonline_md_synopsis">Synopsis</a></li>
+<li><a href="#nmo_isonline_md_description">Description</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+    <hr />
+    <div class="toc main-toc">
+<a href="../api/nmo-activetasks.html">activetasks</a>
+<a href="../api/nmo-cluster.html">cluster</a>
+<a href="../api/nmo-config.html">config</a>
+<a href="../api/nmo-couch-config.html">couch-config</a>
+<a href="../api/nmo-import-csv.html">import-csv</a>
+<a href="../api/nmo-isonline.html">isonline</a>
+<a href="../api/nmo-v.html">v</a>
+<a href="../cli/nmo-cluster.html">cluster</a>
+<a href="../cli/nmo-config.html">config</a>
+<a href="../cli/nmo-couch-config.html">couch-config</a>
+<a href="../cli/nmo-help.html">help</a>
+<a href="../cli/nmo-import-csv.html">import-csv</a>
+<a href="../cli/nmo-isonline.html">isonline</a>
+<a href="../cli/nmo-v.html">v</a>
+<a href="../misc/nmo-faq.html">faq</a>
+<a href="../index.html">index</a>
+    </div>
+  </nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>
+

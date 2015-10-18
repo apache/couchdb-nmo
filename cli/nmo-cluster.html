@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>nmo Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a href="https://github.com/robertkowalski/nmo"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+  <div class="wrapper">
+    <header>
+      <h1>
+        <a href="../">nmo</a>
+      </h1>
+    </header>
+
+    <div class="content">
+      <h1>manage clusters<span><a class="mark" href="#nmo_cluster_md_nmo_cluster_1_manage_clusters" id="nmo_cluster_md_nmo_cluster_1_manage_clusters">#</a></span></h1>
+<h2>Synopsis<span><a class="mark" href="#nmo_cluster_md_synopsis" id="nmo_cluster_md_synopsis">#</a></span></h2>
+<pre><code>nmo cluster get [&lt;clustername&gt;], [&lt;nodename&gt;] [--json]
+nmo cluster add &lt;node&gt;, &lt;url&gt;, &lt;clustername&gt;
+nmo cluster join &lt;clustername&gt;</code></pre>
+<h2>Description<span><a class="mark" href="#nmo_cluster_md_description" id="nmo_cluster_md_description">#</a></span></h2>
+<div class="signature"><ul>
+<li>add:</li>
+</div></ul>
+<p>Add a node to a cluster in the nmo configuration file. Overwrites
+nodes with the same name in the same cluster.
+
+</p>
+<p>Example:
+
+</p>
+<pre><code>nmo cluster add newnode http://user:pw@192.168.1.172 anemone</code></pre>
+<p>This will add a node called <code>newnode</code> available at
+<a href="http://user:pw@192.168.1.172">http://user:pw@192.168.1.172</a> to the cluster <code>anemone</code>.
+
+
+</p>
+<ul>
+<li>get:</li>
+</ul>
+<p>Print sections or values inside sections from the configuration file.
+JSON output is also supported by passing the <code>--json</code> flag.
+
+
+</p>
+<p>Example:
+
+</p>
+<pre><code>nmo cluster get anemone --json</code></pre>
+<p>Will print all nodes in the cluster named anemone as JSON output.
+
+
+</p>
+<ul>
+<li>join:</li>
+</ul>
+<p>Joins nodes in a defined cluster-section to create a cluster
+
+
+</p>
+<p>Example:
+
+</p>
+<pre><code>nmo cluster join anemone</code></pre>
+<p>Will try to join all nodes defined in the anemone section to create a
+new cluster.
+</p>
+
+    </div>
+
+    <footer>
+      <a href="https://github.com/robertkowalski/nmo">
+        Found a bug or typo? Want to contribute code?
+      </a>
+    </footer>
+  </div>
+  <nav class="toc-container">
+    <div class="toc section-toc">
+      <ul>
+<li><a href="#nmo_cluster_md_nmo_cluster_1_manage_clusters">manage clusters</a><ul>
+<li><a href="#nmo_cluster_md_synopsis">Synopsis</a></li>
+<li><a href="#nmo_cluster_md_description">Description</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+    <hr />
+    <div class="toc main-toc">
+<a href="../api/nmo-activetasks.html">activetasks</a>
+<a href="../api/nmo-cluster.html">cluster</a>
+<a href="../api/nmo-config.html">config</a>
+<a href="../api/nmo-couch-config.html">couch-config</a>
+<a href="../api/nmo-import-csv.html">import-csv</a>
+<a href="../api/nmo-isonline.html">isonline</a>
+<a href="../api/nmo-v.html">v</a>
+<a href="../cli/nmo-cluster.html">cluster</a>
+<a href="../cli/nmo-config.html">config</a>
+<a href="../cli/nmo-couch-config.html">couch-config</a>
+<a href="../cli/nmo-help.html">help</a>
+<a href="../cli/nmo-import-csv.html">import-csv</a>
+<a href="../cli/nmo-isonline.html">isonline</a>
+<a href="../cli/nmo-v.html">v</a>
+<a href="../misc/nmo-faq.html">faq</a>
+<a href="../index.html">index</a>
+    </div>
+  </nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>
+

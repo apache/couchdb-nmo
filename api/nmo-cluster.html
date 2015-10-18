@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>nmo Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a href="https://github.com/robertkowalski/nmo"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+  <div class="wrapper">
+    <header>
+      <h1>
+        <a href="../">nmo</a>
+      </h1>
+    </header>
+
+    <div class="content">
+      <h1>manage clusters<span><a class="mark" href="#nmo_cluster_md_nmo_cluster_3_manage_clusters" id="nmo_cluster_md_nmo_cluster_3_manage_clusters">#</a></span></h1>
+<h2>Synopsis<span><a class="mark" href="#nmo_cluster_md_synopsis" id="nmo_cluster_md_synopsis">#</a></span></h2>
+<pre><code>nmo.commands.cluster.add(node, url, cluster)
+nmo.commands.cluster.get([clustername], [node])
+nmo.commands.cluster.join(clustername)</code></pre>
+<h2>Description<span><a class="mark" href="#nmo_cluster_md_description" id="nmo_cluster_md_description">#</a></span></h2>
+<p>Manage clusters.
+
+</p>
+<ul>
+<li>add:</li>
+</ul>
+<p>Add a node to a cluster in the nmo configuration file. Overwrites
+nodes with the same name in the same cluster.
+
+</p>
+<p>Example:
+
+</p>
+<pre><code>var node = &apos;mycustomnodename&apos;;
+var url = &apos;http://user:pw@192.168.1.42&apos;;
+var cluster = &apos;myfirstcluster&apos;;
+nmo.commands.cluster.add(node, url, cluster)</code></pre>
+<ul>
+<li>get:</li>
+</ul>
+<p>Get all clusters, one specific cluster or just one node or just one
+the values for one node.
+
+</p>
+<p>Example:
+
+</p>
+<pre><code>nmo.commands.cluster.get(&apos;myfirstcluster&apos;)</code></pre>
+<ul>
+<li>join:</li>
+</ul>
+<p>Join nodes into a fully operational cluster.
+
+</p>
+<p>Example:
+
+</p>
+<pre><code>nmo.commands.cluster.join(&apos;myfirstcluster&apos;)</code></pre>
+
+    </div>
+
+    <footer>
+      <a href="https://github.com/robertkowalski/nmo">
+        Found a bug or typo? Want to contribute code?
+      </a>
+    </footer>
+  </div>
+  <nav class="toc-container">
+    <div class="toc section-toc">
+      <ul>
+<li><a href="#nmo_cluster_md_nmo_cluster_3_manage_clusters">manage clusters</a><ul>
+<li><a href="#nmo_cluster_md_synopsis">Synopsis</a></li>
+<li><a href="#nmo_cluster_md_description">Description</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+    <hr />
+    <div class="toc main-toc">
+<a href="../api/nmo-activetasks.html">activetasks</a>
+<a href="../api/nmo-cluster.html">cluster</a>
+<a href="../api/nmo-config.html">config</a>
+<a href="../api/nmo-couch-config.html">couch-config</a>
+<a href="../api/nmo-import-csv.html">import-csv</a>
+<a href="../api/nmo-isonline.html">isonline</a>
+<a href="../api/nmo-v.html">v</a>
+<a href="../cli/nmo-cluster.html">cluster</a>
+<a href="../cli/nmo-config.html">config</a>
+<a href="../cli/nmo-couch-config.html">couch-config</a>
+<a href="../cli/nmo-help.html">help</a>
+<a href="../cli/nmo-import-csv.html">import-csv</a>
+<a href="../cli/nmo-isonline.html">isonline</a>
+<a href="../cli/nmo-v.html">v</a>
+<a href="../misc/nmo-faq.html">faq</a>
+<a href="../index.html">index</a>
+    </div>
+  </nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>
+

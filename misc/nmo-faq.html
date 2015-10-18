@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>nmo Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a href="https://github.com/robertkowalski/nmo"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+  <div class="wrapper">
+    <header>
+      <h1>
+        <a href="../">nmo</a>
+      </h1>
+    </header>
+
+    <div class="content">
+      <h1>Frequently Asked Questions<span><a class="mark" href="#nmo_faq_md_nmo_faq_7_frequently_asked_questions" id="nmo_faq_md_nmo_faq_7_frequently_asked_questions">#</a></span></h1>
+<h2>Where are my clusters and config stored?<span><a class="mark" href="#nmo_faq_md_where_are_my_clusters_and_config_stored" id="nmo_faq_md_where_are_my_clusters_and_config_stored">#</a></span></h2>
+<p>We store them in a file called .nmorc in your $HOME. My config is in:
+
+</p>
+<pre><code>/Users/robert/.nmorc</code></pre>
+<p>Never expose your nmoconf to untrusted persons, as it contains your
+node passwords (if your nodes are not in party mode).
+
+</p>
+<h2>How does setting up a cluster work?<span><a class="mark" href="#nmo_faq_md_how_does_setting_up_a_cluster_work" id="nmo_faq_md_how_does_setting_up_a_cluster_work">#</a></span></h2>
+<p>First, add your nodes to the cluster (assuming your user/pw is
+foo/bar) and you want to name your cluster <code>mycluster</code>:
+
+</p>
+<pre><code>nmo cluster add node1 http://foo:bar@example.com mycluster
+nmo cluster add node2 http://foo:bar@example.org mycluster
+nmo cluster add node3 http://foo:bar@node3.example.org mycluster</code></pre>
+<p>Then join them to a cluster:
+
+</p>
+<pre><code>nmo cluster join mycluster</code></pre>
+
+    </div>
+
+    <footer>
+      <a href="https://github.com/robertkowalski/nmo">
+        Found a bug or typo? Want to contribute code?
+      </a>
+    </footer>
+  </div>
+  <nav class="toc-container">
+    <div class="toc section-toc">
+      <ul>
+<li><a href="#nmo_faq_md_nmo_faq_7_frequently_asked_questions">Frequently Asked Questions</a><ul>
+<li><a href="#nmo_faq_md_where_are_my_clusters_and_config_stored">Where are my clusters and config stored?</a></li>
+<li><a href="#nmo_faq_md_how_does_setting_up_a_cluster_work">How does setting up a cluster work?</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+    <hr />
+    <div class="toc main-toc">
+<a href="../api/nmo-activetasks.html">activetasks</a>
+<a href="../api/nmo-cluster.html">cluster</a>
+<a href="../api/nmo-config.html">config</a>
+<a href="../api/nmo-couch-config.html">couch-config</a>
+<a href="../api/nmo-import-csv.html">import-csv</a>
+<a href="../api/nmo-isonline.html">isonline</a>
+<a href="../api/nmo-v.html">v</a>
+<a href="../cli/nmo-cluster.html">cluster</a>
+<a href="../cli/nmo-config.html">config</a>
+<a href="../cli/nmo-couch-config.html">couch-config</a>
+<a href="../cli/nmo-help.html">help</a>
+<a href="../cli/nmo-import-csv.html">import-csv</a>
+<a href="../cli/nmo-isonline.html">isonline</a>
+<a href="../cli/nmo-v.html">v</a>
+<a href="../misc/nmo-faq.html">faq</a>
+<a href="../index.html">index</a>
+    </div>
+  </nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>
+
