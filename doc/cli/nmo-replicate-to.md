@@ -21,4 +21,4 @@ This will replicate the database `hello-database` to the cluster `mycluster` and
     nmo replicate-to mycluster hello-database-replicated http://192.0.0.1/hello-database --create-target --continuous
 
 This will replicate the database `hello-database` to the url `http://my-couchdb-cluster.com` from the supplied url
-    nmo replicate-from http://my-couchdb-cluster hello-database-replicated http://192.0.0.1/hello-database
+    nmo replicate-to http://my-couchdb-cluster hello-database-replicated http://192.0.0.1/hello-database

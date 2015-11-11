@@ -1,7 +1,7 @@
 import assert from 'assert';
 import Lab from 'lab';
 
-import replicateTo, {cli } from '../src/replicate-to.js';
+import { cli } from '../src/replicate-to.js';
 
 import * as common from './common.js';
 import nmo from '../src/nmo.js';
@@ -14,7 +14,7 @@ const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
 
 common.createConfigFile();
 
-lab.experiment('replicate-from', () => {
+lab.experiment('replicate-to', () => {
 
   lab.experiment('cli', () => {
     lab.beforeEach((done) => {

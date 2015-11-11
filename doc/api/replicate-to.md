@@ -1,9 +1,9 @@
-nmo-replicateTo(3) -- replicate-to
+nmo-replicateto(3) -- replicate-to
 ==============================
 
 ## SYNOPSIS
 
-    nmo.commands.replicateTo([<clusterurl> || <cluster>], database, url)
+    nmo.commands.replicateto([<clusterurl> || <cluster>], database, url)
 
 
 ## DESCRIPTION

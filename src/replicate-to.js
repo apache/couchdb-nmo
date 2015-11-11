@@ -19,7 +19,7 @@ export function cli (cluster, dbname, url) {
       return reject(err);
     }
 
-    replicateTo(cluster, dbname, url)
+    replicateto(cluster, dbname, url)
     .then(resp => {
       console.log('Replication started.');
       resolve(resp);
@@ -31,7 +31,7 @@ export function cli (cluster, dbname, url) {
   });
 }
 
-export default function replicateTo(cluster, dbname, url) {
+export default function replicateto(cluster, dbname, url) {
   return new Promise((resolve, reject) => {
     const clusterUrl = getUrlFromCluster(cluster);
     const replicatorUrl = clusterUrl + '/_replicator';

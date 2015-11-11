@@ -1,7 +1,7 @@
 import assert from 'assert';
 import Lab from 'lab';
 
-import replicateFrom, {cli } from '../src/replicate-from.js';
+import { cli } from '../src/replicate-from.js';
 
 import * as common from './common.js';
 import nmo from '../src/nmo.js';
