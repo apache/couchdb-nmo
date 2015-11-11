@@ -9,11 +9,11 @@ import {cli} from '../src/import-csv.js';
 import importcsv from '../src/import-csv.js';
 
 const docs = {
-  "docs":[
+  'docs':[
     {
-      "name":"John",
-      "surname":" Rambo",
-      "email":" john@rambo.com"
+      'name':'John',
+      'surname':' Rambo',
+      'email':' john@rambo.com'
     },
     {
       name: 'Eddie',
@@ -61,7 +61,7 @@ lab.experiment('import csv', () => {
         .post('/fake-csv/_bulk_docs')
         .reply(200);
 
-      cli(__dirname + '/fixtures/fake.csv', 'http://127.0.0.1:5984/fake-csv', 'delimiter=","')
+      cli(__dirname + '/fixtures/fake.csv', 'http://127.0.0.1:5984/fake-csv', 'delimiter=','')
       .then(done);
     });
   });

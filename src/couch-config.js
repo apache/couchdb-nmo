@@ -74,7 +74,7 @@ export function set(cluster, nodes, section, key, value) {
         return true;
       }
 
-      return false
+      return false;
     });
 
     if (offline.length > 0) {

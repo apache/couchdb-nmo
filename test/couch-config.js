@@ -250,11 +250,11 @@ lab.experiment('couch-config', () => {
       //config update
       nock('http://127.0.0.1')
       .put('/_node/node0/_config/section/key', JSON.stringify('value'))
-      .reply(200, JSON.stringify("oldvalue"));
+      .reply(200, JSON.stringify('oldvalue'));
 
       nock('http://192.168.0.1')
       .put('/_node/node1/_config/section/key', JSON.stringify('value'))
-      .reply(200, JSON.stringify("oldvalue"));
+      .reply(200, JSON.stringify('oldvalue'));
 
       set('clusterone', getClusterNodes('clusterone'), 'section', 'key', 'value')
       .then(resp => {
@@ -279,7 +279,7 @@ lab.experiment('couch-config', () => {
       //config update
       nock('http://127.0.0.1')
       .put('/_node/node0/_config/section/key', JSON.stringify('value'))
-      .reply(200, JSON.stringify("oldvalue"));
+      .reply(200, JSON.stringify('oldvalue'));
 
       set('clusterone', getClusterNodes('clusterone'), 'section', 'key', 'value')
       .catch(err => {

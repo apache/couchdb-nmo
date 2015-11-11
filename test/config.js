@@ -20,15 +20,15 @@ mussman=dermussmaen
 `;
 
 const jsonData = {
-  "gang": {
-    "rocko": "artischocko",
-    "z": "zmeister",
-    "j": "janjuleschlie",
-    "mussman": "dermussmaen"
+  'gang': {
+    'rocko': 'artischocko',
+    'z': 'zmeister',
+    'j': 'janjuleschlie',
+    'mussman': 'dermussmaen'
   },
-  "clusterone": {
-    "node0": "http://127.0.0.1",
-    "node1": "http://192.168.0.1"
+  'clusterone': {
+    'node0': 'http://127.0.0.1',
+    'node1': 'http://192.168.0.1'
   }
 };
 

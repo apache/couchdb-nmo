@@ -2,7 +2,7 @@ import assert from 'assert';
 import Lab from 'lab';
 
 import isonline from '../src/isonline.js';
-import {cli, getClusterUrls } from '../src/isonline.js';
+import {cli} from '../src/isonline.js';
 
 import * as common from './common.js';
 import nmo from '../src/nmo.js';

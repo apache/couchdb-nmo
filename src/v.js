@@ -19,5 +19,4 @@ function versionCli () {
     console.log(`node version: ${process.version}`);
     resolve();
   });
-};
-
+}

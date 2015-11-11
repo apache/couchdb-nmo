@@ -74,7 +74,7 @@ export function join (cluster) {
 
         const err = new Error(msg);
         err.type = 'EUSAGE';
-        return reject(err)
+        return reject(err);
       }
 
       const onlineNodes = Object.keys(res).reduce((acc, el) => {
@@ -93,7 +93,7 @@ export function join (cluster) {
           action: 'enable_cluster',
           username: user,
           password: pw,
-          bind_address: '0.0.0.0'
+          'bind_address': '0.0.0.0'
         };
 
         return utils.sendJsonToNode(u + '/_cluster_setup', json);

@@ -6,7 +6,7 @@ export const lab = Lab.script();
 import * as version from '../src/v.js';
 import versionApi from '../src/v.js';
 
-import pkg from '../package.json'
+import pkg from '../package.json';
 
 const oldConsole = console.log;
 

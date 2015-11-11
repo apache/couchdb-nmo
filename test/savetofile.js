@@ -83,27 +83,27 @@ lab.experiment('savetofile', () => {
 
     lab.test('saves contents to file', done => {
       const resp = {
-        "total_rows":2,
-        "offset":0,
-        "rows":[
+        'total_rows':2,
+        'offset':0,
+        'rows':[
             {
-              "id":"0461444c-e60a-457d-a4bb-b8d811853f21",
-              "key":"0461444c-e60a-457d-a4bb-b8d811853f21",
-              "value":{"rev":"1-090ec379aecccc97f8d02bc024ba28e5"},
-              "doc":{
-                "_id":"0461444c-e60a-457d-a4bb-b8d811853f21",
-                "_rev":"1-090ec379aecccc97f8d02bc024ba28e5",
-                "name": "Garren"
+              'id':'0461444c-e60a-457d-a4bb-b8d811853f21',
+              'key':'0461444c-e60a-457d-a4bb-b8d811853f21',
+              'value':{'rev':'1-090ec379aecccc97f8d02bc024ba28e5'},
+              'doc':{
+                '_id':'0461444c-e60a-457d-a4bb-b8d811853f21',
+                '_rev':'1-090ec379aecccc97f8d02bc024ba28e5',
+                'name': 'Garren'
               }
             },
             {
-              "id":"0461444c-e60a-457d-a4bb-b8d811853123",
-              "key":"0461444c-e60a-457d-a4bb-b8d811853123",
-              "value":{"rev":"1-090ec379aecccc97f8d02bc024ba123"},
-              "doc":{
-                "_id":"0461444c-e60a-457d-a4bb-b8d811853f21",
-                "_rev":"1-090ec379aecccc97f8d02bc024ba28e5",
-                "name": "Robert"
+              'id':'0461444c-e60a-457d-a4bb-b8d811853123',
+              'key':'0461444c-e60a-457d-a4bb-b8d811853123',
+              'value':{'rev':'1-090ec379aecccc97f8d02bc024ba123'},
+              'doc':{
+                '_id':'0461444c-e60a-457d-a4bb-b8d811853f21',
+                '_rev':'1-090ec379aecccc97f8d02bc024ba28e5',
+                'name': 'Robert'
               }
             }
         ]
@@ -125,27 +125,27 @@ lab.experiment('savetofile', () => {
 
     lab.test('saves contents to file and zips with --zip', done => {
       const resp = {
-        "total_rows":2,
-        "offset":0,
-        "rows":[
+        'total_rows':2,
+        'offset':0,
+        'rows':[
             {
-              "id":"0461444c-e60a-457d-a4bb-b8d811853f21",
-              "key":"0461444c-e60a-457d-a4bb-b8d811853f21",
-              "value":{"rev":"1-090ec379aecccc97f8d02bc024ba28e5"},
-              "doc":{
-                "_id":"0461444c-e60a-457d-a4bb-b8d811853f21",
-                "_rev":"1-090ec379aecccc97f8d02bc024ba28e5",
-                "name": "Garren"
+              'id':'0461444c-e60a-457d-a4bb-b8d811853f21',
+              'key':'0461444c-e60a-457d-a4bb-b8d811853f21',
+              'value':{'rev':'1-090ec379aecccc97f8d02bc024ba28e5'},
+              'doc':{
+                '_id':'0461444c-e60a-457d-a4bb-b8d811853f21',
+                '_rev':'1-090ec379aecccc97f8d02bc024ba28e5',
+                'name': 'Garren'
               }
             },
             {
-              "id":"0461444c-e60a-457d-a4bb-b8d811853123",
-              "key":"0461444c-e60a-457d-a4bb-b8d811853123",
-              "value":{"rev":"1-090ec379aecccc97f8d02bc024ba123"},
-              "doc":{
-                "_id":"0461444c-e60a-457d-a4bb-b8d811853f21",
-                "_rev":"1-090ec379aecccc97f8d02bc024ba28e5",
-                "name": "Robert"
+              'id':'0461444c-e60a-457d-a4bb-b8d811853123',
+              'key':'0461444c-e60a-457d-a4bb-b8d811853123',
+              'value':{'rev':'1-090ec379aecccc97f8d02bc024ba123'},
+              'doc':{
+                '_id':'0461444c-e60a-457d-a4bb-b8d811853f21',
+                '_rev':'1-090ec379aecccc97f8d02bc024ba28e5',
+                'name': 'Robert'
               }
             }
         ]

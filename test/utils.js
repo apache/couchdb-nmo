@@ -41,7 +41,7 @@ lab.experiment('utils: getClusterUrls', () => {
     });
   });
 
-  lab.test("getClustersUrl throws an error if the cluster doesn't exist", (done) => {
+  lab.test('getClustersUrl throws an error if the cluster does not exist', (done) => {
     nmo
       .load(nmoconf)
       .then(() => {
@@ -146,7 +146,7 @@ lab.experiment('utils: send json to node', () => {
       });
   });
 
-  lab.test('sets "Content-Type" as "application/json"', done => {
+  lab.test('sets Content-Type as application/json', done => {
     const url = 'http://content-type.test';
     const body = {test: true};
     nock(url,{
