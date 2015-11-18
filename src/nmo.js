@@ -13,7 +13,8 @@ const commands = [
   'activetasks',
   'savetofile',
   'replicate-from',
-  'replicate-to'
+  'replicate-to',
+  'query'
 ];
 
 const nmo = {
