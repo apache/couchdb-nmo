@@ -66,7 +66,7 @@
     "lab-babel": "1.0.0",
     "less": "~2.5.0",
     "marked-man": "~0.1.4",
-    "nock": "^2.10.0",
+    "nock": "^3.3.2",
     "node-doc-generator": "robertkowalski/node-documentation-generator#sloppy"
   }
 }
