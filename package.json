@@ -40,22 +40,6 @@
     "wreck": "~7.0.0",
     "xtend": "~4.0.0"
   },
-  "bundleDependencies": [
-    "bluebird",
-    "bulkbadger",
-    "config-chain",
-    "couchbulkimporter",
-    "csv-parse",
-    "ini",
-    "JSONStream",
-    "nopt",
-    "npmlog",
-    "osenv",
-    "prettyjson",
-    "valid-url",
-    "wreck",
-    "xtend"
-  ],
   "devDependencies": {
     "babel": "^6.1.18",
     "babel-cli": "^6.2.0",
