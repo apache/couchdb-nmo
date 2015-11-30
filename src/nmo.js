@@ -14,6 +14,7 @@ const commands = [
   'savetofile',
   'replicate-from',
   'replicate-to',
+  'import-mongo',
   'query'
 ];
 
