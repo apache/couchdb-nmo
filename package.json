@@ -57,10 +57,11 @@
     "xtend"
   ],
   "devDependencies": {
-    "babel": "^5.1.10",
+    "babel": "^6.1.18",
+    "babel-cli": "^6.2.0",
     "babel-eslint": "^4.1.5",
+    "babel-polyfill": "^6.2.0",
     "eslint": "^1.9.0",
-    "jshint": "^2.8.0",
     "lab": "~5.5.1",
     "lab-babel": "1.0.0",
     "less": "~2.5.0",

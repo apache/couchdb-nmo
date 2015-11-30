@@ -1,6 +1,6 @@
 //This needs to go here so that the polyfill
 //is used when the cli loads and the tests
-require('babel/polyfill');
+require('babel-polyfill');
 
 import * as config from './config.js';
 import Promise from 'bluebird';
