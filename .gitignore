@@ -10,16 +10,7 @@ coverage.html
 .idea
 lib-cov
 
-node_modules/lab
-node_modules/lab-babel
-node_modules/babel
-node_modules/babel-core/
-node_modules/less
-node_modules/node-doc-generator
-node_modules/marked-man/
-node_modules/.bin/marked-man
-node_modules/.bin/
-node_modules/nock/
+node_modules
 
 test/fixtures
 
