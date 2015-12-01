@@ -7,7 +7,7 @@ var pkg = require('../package.json');
 var osenv = require('osenv');
 var fs = require('fs');
 
-var nmo = require('../lib/nmo.js');
+var nmo = require('../lib/nmo.js').default;
 var parsed = nopt({
   'json': [Boolean],
   'force': [Boolean],
