@@ -1,13 +1,9 @@
 import assert from 'assert';
-
-import Lab from 'lab';
-export const lab = Lab.script();
-
 import nmo from '../src/nmo.js';
 
 
-lab.experiment('nmo', () => {
-  lab.test('throws for api commands if config not loaded', (done) => {
+describe('nmo', () => {
+  it('throws for api commands if config not loaded', (done) => {
     nmo.config = null;
     assert.throws(
       function () {
@@ -18,7 +14,7 @@ lab.experiment('nmo', () => {
     done();
   });
 
-  lab.test('throws for cli commands if config not loaded', (done) => {
+  it('throws for cli commands if config not loaded', (done) => {
     nmo.config = null;
     assert.throws(
       function () {
@@ -29,7 +25,7 @@ lab.experiment('nmo', () => {
     done();
   });
 
-  lab.test('does not throw for cli commands if config not loaded', (done) => {
+  it('does not throw for cli commands if config not loaded', (done) => {
     nmo.config = null;
     nmo.load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
       nmo.cli.help().then(() => {
@@ -38,17 +34,16 @@ lab.experiment('nmo', () => {
     });
   });
 
-  lab.test('rejects on failure', (done) => {
+  it('rejects on failure', (done) => {
     nmo.load({nmoconf: 'bler'}).catch(() => {
       done();
     });
   });
 
-  lab.test('has a version property', (done) => {
+  it('has a version property', () => {
     nmo.config = null;
-    nmo.load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
+    return nmo.load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
       assert.ok(nmo.version);
-      done();
     });
   });
 });

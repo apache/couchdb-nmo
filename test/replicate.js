@@ -1,15 +1,12 @@
 import assert from 'assert';
-import Lab from 'lab';
 import nock from 'nock';
 
 import {createReplicatorDoc, replicate} from '../src/replicate.js';
-export let lab = Lab.script();
 
+describe('replicate', () => {
 
-lab.experiment('replicate', () => {
-
-  lab.experiment('createReplicatorDoc', () => {
-    lab.test('creates correctly defined doc', (done) => {
+  describe('createReplicatorDoc', () => {
+    it('creates correctly defined doc', () => {
       var doc = createReplicatorDoc('source-url', 'target-url', {continuous: true, 'create_target': true});
 
       assert.deepEqual({
@@ -24,13 +21,12 @@ lab.experiment('replicate', () => {
         'create_target': true
       }, doc);
 
-      done();
     });
   });
 
-  lab.experiment('replicate', () => {
+  describe('replicate', () => {
 
-    lab.it('returns json response', done => {
+    it('returns json response', () => {
       var data = {ok: true};
       var payload = {
         source: {
@@ -48,27 +44,21 @@ lab.experiment('replicate', () => {
         .post('/_replicator')
         .reply(200, data);
 
-      replicate('http://127.0.0.1/_replicator', payload)
+      return replicate('http://127.0.0.1/_replicator', payload)
       .then(resp => {
         assert.deepEqual(resp, data);
-        done();
       });
-
-
     });
 
-    lab.it('returns error on failed replication', done => {
+    it('returns error on failed replication', () => {
       nock('http://127.0.0.1')
         .post('/_replicator')
         .reply(500, {reason: 'ERROR'});
 
-      replicate('http://127.0.0.1/_replicator', {})
+      return replicate('http://127.0.0.1/_replicator', {})
       .catch(err => {
         assert.deepEqual(err.type, 'EUSAGE');
-        done();
       });
-
     });
-
   });
 });

@@ -1,42 +1,28 @@
 import assert from 'assert';
+import { consoleMock } from './helpers';
 
-import Lab from 'lab';
-export const lab = Lab.script();
-
-import * as version from '../src/v.js';
-import versionApi from '../src/v.js';
+import versionApi, {cli} from '../src/v.js';
 
 import pkg from '../package.json';
 
-const oldConsole = console.log;
 
-lab.experiment('api: version', () => {
+describe('api: version', () => {
 
-  lab.test('gets the current nmo version', (done) => {
-    versionApi().then((res) => {
+  it('gets the current nmo version', () => {
+    return versionApi().then((res) => {
       assert.equal(pkg.version, res.nmo);
-      done();
     });
   });
 });
 
-lab.experiment('cli: version', () => {
-  lab.afterEach((done) => {
-    console.log = oldConsole;
-    done();
-  });
+describe('cli: version', () => {
 
-  lab.test('logs the current version', (done) => {
-    console.log = (...args) => {
-      if (/nmo/.test(args[0])) {
-        assert.ok(new RegExp(pkg.version, 'ig').test(args[0]));
-      }
-    };
+  it('logs the current version', (done) => {
+    console.log = consoleMock((...args) => {
+      assert.ok(new RegExp(pkg.version, 'ig').test(args[0]));
+      done();
+    });
 
-    version
-      .cli()
-      .then(() => {
-        done();
-      });
+    return cli();
   });
 });

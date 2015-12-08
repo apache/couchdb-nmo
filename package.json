@@ -7,8 +7,8 @@
   "scripts": {
     "transpile": "babel src -d lib",
     "prepublish": "make && npm run transpile",
-    "test": "npm run lint && lab -v --transform node_modules/lab-babel -S -I core,_babelPolyfill,regeneratorRuntime,__core-js_shared__,Reflect",
-    "lint": "eslint ./src ./test"
+    "test": "npm run lint && ./node_modules/.bin/mocha --compilers js:babel-register ./test/*.js",
+    "lint": "eslint ./src ./test ./bin"
   },
   "author": "Robert Kowalski <rok@kowalski.gd>",
   "license": "Apache 2.0",
@@ -47,10 +47,9 @@
     "babel-eslint": "^4.1.5",
     "babel-polyfill": "^6.2.0",
     "eslint": "^1.9.0",
-    "lab": "~5.5.1",
-    "lab-babel": "1.0.0",
     "less": "~2.5.0",
     "marked-man": "~0.1.4",
+    "mocha": "^2.3.4",
     "nock": "^3.3.2",
     "node-doc-generator": "robertkowalski/node-documentation-generator#sloppy"
   }

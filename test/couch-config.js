@@ -1,112 +1,99 @@
 import assert from 'assert';
 
-import Lab from 'lab';
-export const lab = Lab.script();
 import nock from 'nock';
 import { createConfigFile } from './common';
 import nmo from '../src/nmo.js';
 import {cli, setConfig, getClusterNodes, buildConfigUrl, getConfig, get, set} from '../src/couch-config.js';
+import { consoleMock } from './helpers';
 
-lab.experiment('couch-config', () => {
+describe('couch-config', () => {
   createConfigFile();
 
-  lab.beforeEach((done) => {
-    nmo
-      .load({nmoconf: __dirname + '/fixtures/randomini'})
-      .then(() => done())
-      .catch(() => done());
+  beforeEach(() => {
+    return nmo
+      .load({nmoconf: __dirname + '/fixtures/randomini'});
   });
 
-  lab.experiment('cli', () => {
+  describe('cli', () => {
 
-    lab.test('no arguments', (done) => {
+    it('no arguments', () => {
+      return cli()
+        .catch(err => {
+          assert.ok(/Usage/.test(err.message));
+        });
+    });
 
-      cli().catch(err => {
-        assert.ok(/Usage/.test(err.message));
-        done();
-      });
+    it('non-existing command', () => {
+
+      return cli('wrong', 'command')
+        .catch(err => {
+          assert.ok(/Usage/.test(err.message));
+        });
 
     });
 
-    lab.test('non-existing command', (done) => {
+    it('error on missing cluster', () => {
 
-      cli('wrong', 'command').catch(err => {
+      return cli('get')
+        .catch(err => {
         assert.ok(/Usage/.test(err.message));
-        done();
-      });
+        });
 
     });
 
-    lab.test('error on missing cluster', (done) => {
+    it('error on non-existing cluster', () => {
 
-      cli('get').catch(err => {
-        assert.ok(/Usage/.test(err.message));
-        done();
-      });
-
-    });
-
-    lab.test('error on non-existing cluster', (done) => {
-
-      cli('get', 'not-exist').catch(err => {
-        assert.ok(/Cluster/.test(err.message));
-        done();
-      });
-
+      return cli('get', 'not-exist')
+        .catch(err => {
+          assert.ok(/Cluster/.test(err.message));
+        });
     });
 
   });
 
-  lab.experiment('api', () => {
+  describe('api', () => {
 
-    lab.test('getClusterNodes returns existing nodes', (done) => {
+    it('getClusterNodes returns existing nodes', () => {
       const nodes = getClusterNodes('clusterone');
 
       assert.deepEqual(nodes, {
         node0: 'http://127.0.0.1',
         node1: 'http://192.168.0.1'
       });
-
-      done();
     });
 
-    lab.test('buildConfigUrl builds correctly with node and url', (done) => {
+    it('buildConfigUrl builds correctly with node and url', () => {
       const url = buildConfigUrl('node', 'http://127.0.0.1');
       assert.deepEqual(url, 'http://127.0.0.1/_node/node/_config');
-      done();
     });
 
-    lab.test('buildConfigUrl builds correctly with node, url and section', (done) => {
+    it('buildConfigUrl builds correctly with node, url and section', () => {
       const url = buildConfigUrl('node', 'http://127.0.0.1', 'a-section');
       assert.deepEqual(url, 'http://127.0.0.1/_node/node/_config/a-section');
-      done();
     });
 
-    lab.test('getConfig throws error on bad url', (done) => {
-      getConfig('node1', 'bad-url')
+    it('getConfig throws error on bad url', () => {
+      return getConfig('node1', 'bad-url')
       .catch(err => {
         assert.ok(/not a valid url/.test(err.message));
-        done();
       });
     });
 
-    lab.test('getConfig throws error on invalid protocol', (done) => {
-      getConfig('node1', 'ftp://bad-url')
-      .catch(err => {
-        assert.ok(/invalid protocol/.test(err.message));
-        done();
-      });
+    it('getConfig throws error on invalid protocol', () => {
+      return getConfig('node1', 'ftp://bad-url')
+        .catch(err => {
+          assert.ok(/invalid protocol/.test(err.message));
+        });
     });
 
-    lab.test('gets config bad url returns false', (done) => {
-      getConfig('node1', 'http://127.0.0.2/')
-      .catch(err => {
-        assert.ok(/Could not find node/.test(err.message));
-        done();
-      });
+    it('gets config bad url returns false', () => {
+      return getConfig('node1', 'http://127.0.0.2/')
+        .catch(err => {
+          assert.ok(/Could not find node/.test(err.message));
+        });
     });
 
-    lab.test('gets config for node', (done) => {
+    it('gets config for node', () => {
       const resp = {
         config1: 'hello',
         config2: 'boom'
@@ -116,27 +103,19 @@ lab.experiment('couch-config', () => {
         .get('/_node/node1/_config/uuid')
         .reply(200, resp);
 
-      getConfig('node1', 'http://127.0.0.1/_node/node1/_config/uuid')
-      .then(config => {
-        assert.deepEqual(config, {
-          node: 'node1',
-          config: resp
+      return getConfig('node1', 'http://127.0.0.1/_node/node1/_config/uuid')
+        .then(config => {
+          assert.deepEqual(config, {
+            node: 'node1',
+            config: resp
+          });
         });
-        done();
-      });
     });
 
   });
 
-  lab.experiment('get cmd', () => {
-    let oldConsole = console.log;
-
-    lab.afterEach(done => {
-      console.log = oldConsole;
-      done();
-    });
-
-    lab.test('get returns config', (done) => {
+  describe('get cmd', () => {
+    it('get returns config', () => {
       const nodes = {
         node1: 'http://127.0.0.1'
       };
@@ -150,19 +129,18 @@ lab.experiment('couch-config', () => {
         .get('/_node/node1/_config/uuid')
         .reply(200, resp);
 
-      get('cluster', nodes, 'uuid')
-      .then(config => {
-        assert.deepEqual(config, {
-          node1: {
-          config1: 'hello',
-          config2: 'boom'
-        }
-       });
-       done();
+      return get('cluster', nodes, 'uuid')
+        .then(config => {
+          assert.deepEqual(config, {
+            node1: {
+            config1: 'hello',
+            config2: 'boom'
+          }
+         });
       });
     });
 
-    lab.test('get returns json if set', done => {
+    it('get returns json if set', () => {
       const nodes = {
         node1: 'http://127.0.0.100'
       };
@@ -176,19 +154,17 @@ lab.experiment('couch-config', () => {
         .get('/_node/node1/_config/uuid')
         .reply(200, resp);
 
-      nmo
+      return nmo
         .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then(() => {
-
-          get('cluster', nodes, 'uuid')
-          .then(jsonresp => {
-            assert.deepEqual({node1: resp}, jsonresp);
-            done();
-          });
+          return get('cluster', nodes, 'uuid');
+        })
+        .then(jsonresp => {
+          assert.deepEqual({node1: resp}, jsonresp);
         });
     });
 
-    lab.test('get prints config', done => {
+    it('get prints config', (done) => {
       const nodes = {
         node1: 'http://127.0.0.1'
       };
@@ -202,24 +178,20 @@ lab.experiment('couch-config', () => {
         .get('/_node/node1/_config/uuid')
         .reply(200, resp);
 
-      console.log = (msg) => {
-        if (/NODE:/.test(msg)) {
-          return;
-        }
-
+      console.log = consoleMock(msg => {
         assert.ok(/config1/.test(msg));
         assert.ok(/config2/.test(msg));
 
         done();
-      };
+      });
 
       get('cluster', nodes, 'uuid');
     });
   });
 
-  lab.experiment('set cmd', () => {
+  describe('set cmd', () => {
 
-    lab.test('returns error if all nodes are not online', done => {
+    it('returns error if all nodes are not online', () => {
       nock('http://127.0.0.1')
       .get('/')
       .reply(500);
@@ -228,16 +200,13 @@ lab.experiment('couch-config', () => {
       .get('/')
       .reply(500);
 
-      set('clusterone', 'nodes', 'section', 'key', 'value')
-      .catch(err => {
-        console.log('ERR', err);
-        assert.ok(/is offline/.test(err.message));
-        done();
-      });
-
+      return set('clusterone', 'nodes', 'section', 'key', 'value')
+        .catch(err => {
+          assert.ok(/is offline/.test(err.message));
+        });
     });
 
-    lab.test('sets config on all nodes for cluster', done => {
+    it('sets config on all nodes for cluster', () => {
       //isonline
       nock('http://127.0.0.1')
       .get('/')
@@ -256,17 +225,15 @@ lab.experiment('couch-config', () => {
       .put('/_node/node1/_config/section/key', JSON.stringify('value'))
       .reply(200, JSON.stringify('oldvalue'));
 
-      set('clusterone', getClusterNodes('clusterone'), 'section', 'key', 'value')
+      return set('clusterone', getClusterNodes('clusterone'), 'section', 'key', 'value')
       .then(resp => {
-        assert.deepEqual(resp, [
-          { node: 'node0', oldvalue: 'oldvalue', newvalue: 'value' },
-          { node: 'node1', oldvalue: 'oldvalue', newvalue: 'value' } ]);
-        done();
-      });
-
+          assert.deepEqual(resp, [
+            { node: 'node0', oldvalue: 'oldvalue', newvalue: 'value' },
+            { node: 'node1', oldvalue: 'oldvalue', newvalue: 'value' } ]);
+        });
     });
 
-    lab.test('sets config throws error', done => {
+    it('sets config throws error', () => {
       //isonline
       nock('http://127.0.0.1')
       .get('/')
@@ -281,20 +248,18 @@ lab.experiment('couch-config', () => {
       .put('/_node/node0/_config/section/key', JSON.stringify('value'))
       .reply(200, JSON.stringify('oldvalue'));
 
-      set('clusterone', getClusterNodes('clusterone'), 'section', 'key', 'value')
+      return set('clusterone', getClusterNodes('clusterone'), 'section', 'key', 'value')
       .catch(err => {
         assert.ok(/Error on set config for node/.test(err.message));
-        done();
       });
 
     });
 
-    lab.test('setsConfig warns on incorrect url', done => {
+    it('setsConfig warns on incorrect url', () => {
 
-      setConfig('node1', 'ftp://127.0.0.1', 'section', 'key', 'value')
+      return setConfig('node1', 'ftp://127.0.0.1', 'section', 'key', 'value')
       .catch(err => {
         assert.ok(/invalid protocol/.test(err.message));
-        done();
       });
 
     });

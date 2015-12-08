@@ -1,67 +1,55 @@
 import assert from 'assert';
 import nock from 'nock';
 
-import Lab from 'lab';
-export const lab = Lab.script();
-
 import * as cluster from '../src/cluster.js';
 import nmo from '../src/nmo.js';
 import {createConfigFile} from './common.js';
-
-
+import { consoleMock } from './helpers';
 
 const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
-const oldConsole = console.log;
 
-lab.experiment('cluster - get', () => {
+describe('cluster - get', () => {
 
-  lab.beforeEach((done) => {
+  beforeEach(() => {
     createConfigFile();
-    nmo
+    return nmo
       .load(nmoconf)
-      .then(() => done())
-      .catch(() => done());
   });
 
-  lab.test('errors on nmoconf', (done) => {
-    cluster
+  it('errors on nmoconf', () => {
+    return cluster
       .get('nmoconfig')
       .catch((err) => {
         assert.ok(/valid/.test(err.message));
-        done();
       });
   });
 
-  lab.test('returns the clustername', (done) => {
-    cluster
+  it('returns the clustername', () => {
+    return cluster
       .get('clusterone', 'node0')
       .then((res) => {
         assert.equal(res, 'http://127.0.0.1');
-        done();
       });
     });
 });
 
-lab.experiment('cluster - add', () => {
+describe('cluster - add', () => {
 
-  lab.beforeEach((done) => {
+  beforeEach(() => {
     createConfigFile();
-    nmo
-      .load(nmoconf)
-      .then(() => done())
-      .catch(() => done());
+    return nmo
+      .load(nmoconf);
   });
 
-  lab.test('errors on empty args', (done) => {
-    cluster
+  it('errors on empty args', () => {
+    return cluster
       .add()
       .catch((err) => {
         assert.ok(/provide/.test(err.message));
-        done();
       });
   });
 
-  lab.test('errors on nmoconf', (done) => {
+  it('errors on nmoconf', (done) => {
     cluster
       .add('foo', 'bar', 'nmoconfig')
       .catch((err) => {
@@ -70,7 +58,7 @@ lab.experiment('cluster - add', () => {
       });
   });
 
-  lab.test('adds cluster', (done) => {
+  it('adds cluster', (done) => {
     cluster
       .add('rockbert', 'artischockbert', 'foocluster')
       .then((res) => {
@@ -85,54 +73,47 @@ lab.experiment('cluster - add', () => {
 
 });
 
-lab.experiment('cluster - join', () => {
+describe('cluster - join', () => {
 
-  lab.beforeEach((done) => {
+  beforeEach(() => {
     createConfigFile();
-    nmo
-      .load(nmoconf)
-      .then(() => done())
-      .catch(() => done());
-
+    return nmo
+      .load(nmoconf);
   });
 
-  lab.test('errors on empty args', (done) => {
-    cluster
+  it('errors on empty args', () => {
+    return cluster
       .join()
       .catch((err) => {
         assert.ok(/Usage/.test(err.message));
-        done();
       });
   });
 
-  lab.test('errors on nmoconf', (done) => {
-    cluster
+  it('errors on nmoconf', () => {
+    return cluster
       .join('nmoconfig')
       .catch((err) => {
         assert.ok(/valid/.test(err.message));
-        done();
       });
   });
 
-  lab.test('errors on a cluster with no nodes', (done) => {
-    cluster
+  it('errors on a cluster with no nodes', () => {
+    return cluster
       .join('doesnotexist')
       .catch((err) => {
         assert.ok(/any nodes/.test(err.message));
-        done();
       });
   });
 
-  lab.test('errors on cluster with 1 node', (done) => {
-    cluster
+  it('errors on cluster with 1 node', () => {
+    return cluster
       .join('onenodecluster')
       .catch((err) => {
         assert.ok(/enough nodes/.test(err.message));
-        done();
       });
   });
 
-  lab.test('warns on offline nodes', (done) => {
+  it('warns on offline nodes', () => {
     nock('http://neverexists.neverexists')
       .get('/')
       .reply(500);
@@ -141,15 +122,14 @@ lab.experiment('cluster - join', () => {
       .get('/')
       .reply(500);
 
-    cluster
+    return cluster
       .join('clustervalidurlsbothdown')
       .catch((err) => {
         assert.ok(/nodes are/.test(err.message));
-        done();
       });
   });
 
-  lab.test('warns on offline node', (done) => {
+  it('warns on offline node', () => {
     nock('http://neverexists.neverexists')
       .get('/')
       .reply(500);
@@ -158,15 +138,14 @@ lab.experiment('cluster - join', () => {
       .get('/')
       .reply(200);
 
-    cluster
+    return cluster
       .join('clustervalidurlsonedown')
       .catch((err) => {
         assert.ok(/node is/.test(err.message));
-        done();
       });
   });
 
-  lab.test('succeeds at online nodes with pw', (done) => {
+  it('succeeds at online nodes with pw', () => {
     nock('http://a:b@127.0.0.1:1337')
       .get('/')
       .reply(200);
@@ -199,15 +178,14 @@ lab.experiment('cluster - join', () => {
       .post('/_cluster_setup')
       .reply(200, {ok: true});
 
-    cluster
+    return cluster
       .join('clustervalidurlswithpw')
       .then((res) => {
         assert.deepEqual(res, { ok: true });
-        done();
       });
   });
 
-  lab.test('succeeds at online nodes', (done) => {
+  it('succeeds at online nodes', () => {
     nock('http://127.0.0.1:1337')
       .get('/')
       .reply(200);
@@ -240,15 +218,14 @@ lab.experiment('cluster - join', () => {
       .post('/_cluster_setup')
       .reply(200, {ok: true});
 
-    cluster
+    return cluster
       .join('clustervalidurls')
       .then((res) => {
         assert.deepEqual(res, { ok: true });
-        done();
       });
   });
 
-  lab.test('succeeds with offline nodes, but --force given', (done) => {
+  it('succeeds with offline nodes, but --force given', () => {
     nock('http://127.0.0.1:1337')
       .get('/')
       .reply(200);
@@ -269,67 +246,56 @@ lab.experiment('cluster - join', () => {
       .get('/')
       .reply(500);
 
-    nmo.load({nmoconf: __dirname + '/fixtures/randomini', force: true}).then(() => {
-      cluster
+    return nmo.load({nmoconf: __dirname + '/fixtures/randomini', force: true}).then(() => {
+      return cluster
         .join('clustervalidurlsonedown')
         .then((res) => {
           assert.deepEqual(res, { ok: true });
-          done();
         });
     });
   });
-
 });
 
 
-lab.experiment('cluster - cli', () => {
+describe('cluster - cli', () => {
 
-  lab.beforeEach((done) => {
+  beforeEach(() => {
     createConfigFile();
-    nmo
+    return nmo
       .load(nmoconf)
-      .then(() => done())
-      .catch(() => done());
-
   });
 
-  lab.afterEach((done) => {
-    console.log = oldConsole;
-    done();
-  });
-
-  lab.test('adds cluster', (done) => {
-    cluster
+  it('adds cluster', () => {
+    return cluster
       .cli('add', 'rockbert', 'artischockbert', 'foocluster2')
       .then((res) => {
-        cluster
+        return cluster
           .get('foocluster2')
           .then((res) => {
             assert.deepEqual(res, {rockbert: 'artischockbert'});
-            done();
           });
       });
   });
 
-  lab.test('gets cluster', (done) => {
-    console.log = (...args) => {
+  it('gets cluster', (done) => {
+    console.log = consoleMock((...args) => {
       if (/rockbert=artischockbert/.test(args[0])) {
         assert.equal('rockbert=artischockbert\n', args[0]);
         done();
       }
-    };
+    });
 
-    nmo.load({nmoconf: __dirname + '/fixtures/randomini' }).then(() => {
-      cluster
+    return nmo.load({nmoconf: __dirname + '/fixtures/randomini' }).then(() => {
+      return cluster
         .cli('add', 'rockbert', 'artischockbert', 'foocluster3')
         .then((res) => {
-          cluster
+          return cluster
             .cli('get', 'foocluster3');
           });
         });
   });
 
-  lab.test('joins cluster', (done) => {
+  it('joins cluster', () => {
     nock('http://127.0.0.1:1337')
       .get('/')
       .reply(200);
@@ -362,16 +328,15 @@ lab.experiment('cluster - cli', () => {
       .post('/_cluster_setup')
       .reply(200, {ok: true});
 
-    console.log = (...args) => {
+    console.log = consoleMock((...args) => {
       assert.equal('cluster joined', args[0]);
-      done();
-    };
+    });
 
-    cluster
+    return cluster
       .cli('join', 'clustervalidurls');
   });
 
-  lab.test('returns error on wrong usage', (done) => {
+  it('returns error on wrong usage', (done) => {
     try {
       cluster.cli('lalala');
     } catch(err) {

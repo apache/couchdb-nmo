@@ -1,5 +1,4 @@
 import assert from 'assert';
-import Lab from 'lab';
 
 import { cli } from '../src/replicate-from.js';
 
@@ -8,37 +7,27 @@ import nmo from '../src/nmo.js';
 
 import nock from 'nock';
 
-export let lab = Lab.script();
-const oldConsole = console.log;
 const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
 
 common.createConfigFile();
 
-lab.experiment('replicate-from', () => {
+describe('replicate-from', () => {
 
-  lab.experiment('cli', () => {
-    lab.beforeEach((done) => {
-      nmo
-        .load(nmoconf)
-        .then(() => done())
-        .catch(() => done());
-
+  describe('cli', () => {
+    beforeEach(() => {
+      return nmo
+        .load(nmoconf);
     });
 
-    lab.afterEach((done) => {
-      console.log = oldConsole;
-      done();
-    });
-
-    lab.test('returns error on no value provided', done => {
-      cli()
+    it('returns error on no value provided', done => {
+      return cli()
         .catch((err) => {
           assert.ok(err instanceof Error);
           done();
         });
     });
 
-    lab.test('replicates db given cluster details', done => {
+    it('replicates db given cluster details', () => {
       const doc = {
         'source':{
           'url':'http://127.0.0.1/mydb'
@@ -54,14 +43,13 @@ lab.experiment('replicate-from', () => {
         .post('/_replicator', doc)
         .reply(200, {ok: true, id: '123', rev: '123'});
 
-      cli('clusterone', 'mydb', 'https://target-repl.com/new-db')
+      return cli('clusterone', 'mydb', 'https://target-repl.com/new-db')
       .then(resp => {
         assert.ok(resp.ok);
-        done();
       });
     });
 
-    lab.test('replicates db given cluster details with continuous and create_target', done => {
+    it('replicates db given cluster details with continuous and create_target', () => {
       nmo
         .load({nmoconf: __dirname + '/fixtures/randomini', 'create-target': true, continuous: true})
         .then(() => {
@@ -80,10 +68,9 @@ lab.experiment('replicate-from', () => {
             .post('/_replicator', doc)
             .reply(200, {ok: true, id: '123', rev: '123'});
 
-          cli('clusterone', 'mydb', 'https://target-repl.com/new-db')
+          return cli('clusterone', 'mydb', 'https://target-repl.com/new-db')
           .then(resp => {
             assert.ok(resp.ok);
-            done();
           });
         });
     });

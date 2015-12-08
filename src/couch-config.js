@@ -58,8 +58,11 @@ export function get (cluster, nodes, section) {
     }
 
     Object.keys(nodeConfigs).forEach(node => {
-      console.log('NODE:', node);
-      console.log(prettyjson.render(nodeConfigs[node], {}));
+      var msg = [
+        'NODE:',
+        prettyjson.render(nodeConfigs[node], {})
+      ].join('\n');
+      console.log(msg);
     });
   });
 

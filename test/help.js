@@ -1,43 +1,32 @@
 import assert from 'assert';
 
-import Lab from 'lab';
-export const lab = Lab.script();
-
 import { createConfigFile } from './common';
 import help from '../src/help.js';
 import {cli} from '../src/help.js';
 
-import {load} from '../src/nmo.js';
+import nmo from '../src/nmo.js';
+import { consoleMock } from './helpers';
 
 const oldConsole = console.log;
 
-lab.experiment('help', () => {
+describe('help', () => {
   createConfigFile();
 
-  lab.before((done) => {
-    load({nmoconf: __dirname + '/fixtures/randomini'}).then(() => {
-      done();
-    });
+  beforeEach(() => {
+    return nmo.load({nmoconf: __dirname + '/fixtures/randomini'});
   });
 
-  lab.afterEach((done) => {
-    console.log = oldConsole;
-    done();
-  });
-
-  lab.test('prints available commands', (done) => {
-    console.log = (...args) => {
+  it('prints available commands', (done) => {
+    console.log = consoleMock((...args) => {
       assert.ok(/help/.test(args[0]));
       assert.ok(/isonline/.test(args[0]));
-    };
+      done();
+    });
 
-    help()
-      .then((res) => {
-        done();
-      });
+    help();
   });
 
-  lab.test('opens manpages', (done) => {
+  it('opens manpages', (done) => {
     cli('help')
       .then((child) => {
         child.kill();

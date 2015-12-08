@@ -1,7 +1,5 @@
 import assert from 'assert';
 
-import Lab from 'lab';
-export const lab = Lab.script();
 import nock from 'nock';
 import { createConfigFile } from './common';
 import nmo from '../src/nmo.js';
@@ -22,76 +20,69 @@ const docs = {
     }
   ]};
 
-lab.experiment('import csv', () => {
+describe('import csv', () => {
   createConfigFile();
-  lab.beforeEach((done) => {
-    nmo
-      .load({nmoconf: __dirname + '/fixtures/randomini'})
-      .then(() => done())
-      .catch(() => done());
+
+  beforeEach(() => {
+    return nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
 
   });
 
-  lab.experiment('cli', () => {
+  describe('cli', () => {
 
-    lab.test('throws error if no inputs', (done) => {
-
+    it('throws error if no inputs', (done) => {
       try {
         cli();
       } catch(e) {
         assert.deepEqual(e.type, 'EUSAGE');
+        done();
       }
-      done();
     });
 
-    lab.test('throws error if bad url', (done) => {
-
+    it('throws error if bad url', (done) => {
       try {
         cli('file', 'bad-url');
       } catch(e) {
         assert.ok(/not a valid url/.test(e.message));
+        done();
       }
-      done();
     });
 
-    lab.test('full integration works', (done) => {
+    it('full integration works', () => {
       nock('http://127.0.0.1:5984')
         .put('/fake-csv')
         .reply(200)
         .post('/fake-csv/_bulk_docs')
         .reply(200);
 
-      cli(__dirname + '/fixtures/fake.csv', 'http://127.0.0.1:5984/fake-csv', 'delimiter=','')
-      .then(done);
+      return cli(__dirname + '/fixtures/fake.csv', 'http://127.0.0.1:5984/fake-csv', 'delimiter=','');
     });
   });
 
-  lab.experiment('upload to couchdb', () => {
+  describe('upload to couchdb', () => {
 
-    lab.test('reports bad file', (done) => {
+    it('reports bad file', () => {
       const url = 'http://127.0.0.1:5984';
-      importcsv('bad-fake.csv', url + '/csv-upload', {}).catch(function (err) {
+      return importcsv('bad-fake.csv', url + '/csv-upload', {}).catch(function (err) {
         assert.ok(/Error reading file -/.test(err));
-        done();
       });
 
     });
 
-    lab.test('logs error for failed request', (done) => {
+    it('logs error for failed request', () => {
       const url = 'http://127.0.0.1:5984';
 
       nock(url)
         .put('/csv-upload')
         .reply(501);
 
-      importcsv(__dirname + '/fixtures/fake.csv', url + '/csv-upload', {}).catch(function (err) {
+      return importcsv(__dirname + '/fixtures/fake.csv', url + '/csv-upload', {}).catch(function (err) {
         assert.ok(/CouchDB server answered:/.test(err));
-        done();
       });
 
     });
 
-    lab.test('Uploads csv file to CouchDB', (done) => {
+    it('Uploads csv file to CouchDB', () => {
       const url = 'http://127.0.0.1:5984';
 
       nock(url)
@@ -100,14 +91,10 @@ lab.experiment('import csv', () => {
         .post('/csv-upload/_bulk_docs', docs)
         .reply(200);
 
-      importcsv(__dirname + '/fixtures/fake.csv', url + '/csv-upload', {delimiter: ',', columns: true}).then(function () {
-        done();
-      }).catch(function (err) {
+      return importcsv(__dirname + '/fixtures/fake.csv', url + '/csv-upload', {delimiter: ',', columns: true})
+      .catch(function (err) {
         throw 'error ' + err;
       });
-
     });
-
   });
-
 });

@@ -1,45 +1,37 @@
 import assert from 'assert';
 import nock from 'nock';
-import Lab from 'lab';
-export const lab = Lab.script();
 import { createConfigFile } from './common';
 
 import nmo from '../src/nmo.js';
 import getActiveTask, { filterTasks, cli }  from '../src/activetasks.js';
+import { consoleMock } from './helpers';
 
-lab.experiment('activetasks', () => {
+describe('activetasks', () => {
   createConfigFile();
-  lab.beforeEach((done) => {
-    nmo
-      .load({nmoconf: __dirname + '/fixtures/randomini'})
-      .then(() => done())
-      .catch(() => done());
+
+  beforeEach(() => {
+    return nmo
+      .load({nmoconf: __dirname + '/fixtures/randomini'});
   });
 
-  lab.experiment('cli', () => {
-    const oldConsole = console.log;
+  describe('cli', () => {
 
-    lab.afterEach(done => {
-      console.log = oldConsole;
-      done();
-    });
-
-    lab.test('no arguments', done => {
+    it('no arguments', done => {
       cli().catch(err => {
         assert.ok(/Usage/.test(err.message));
         done();
       });
     });
 
-    lab.test('does json', done => {
+    it('does json', done => {
       nock('http://127.0.0.11')
         .get('/_active_tasks')
         .reply(200, []);
 
-      console.log = msg => {
-        assert.deepEqual(msg, []);
+      console.log = consoleMock(msg => {
         done();
-      };
+        assert.deepEqual(msg, []);
+      });
 
       nmo
         .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
@@ -49,27 +41,27 @@ lab.experiment('activetasks', () => {
 
     });
 
-    lab.test('rejests errors', done => {
-      cli('http://127.0.0.11')
+    it('rejests errors', () => {
+      return cli('http://127.0.0.11')
       .catch(err => {
         assert.ok(err);
-        done();
       });
     });
 
-    lab.test('Not existing cluster', (done) => {
+    it('Not existing cluster', () => {
 
-      cli('wrong').catch(err => {
+      return cli('wrong').catch(err => {
         assert.ok(/Cluster does not exist/.test(err.message));
-        done();
       });
     });
 
-    lab.test('returns no active tasks for filter', done => {
-      console.log = function (msg) {
+
+
+    it('returns no active tasks for filter', done => {
+      console.log = consoleMock((msg, log) => {
         assert.ok(/for that filter/.test(msg));
         done();
-      };
+      });
 
       nock('http://127.0.0.11')
         .get('/_active_tasks')
@@ -79,11 +71,11 @@ lab.experiment('activetasks', () => {
     });
 
 
-    lab.test('returns no active tasks', done => {
-      console.log = function (msg) {
+    it('returns no active tasks', done => {
+      console.log = consoleMock(function (msg) {
         assert.ok(/There are no active tasks/.test(msg));
         done();
-      };
+      });
 
       nock('http://127.0.0.11')
         .get('/_active_tasks')
@@ -92,7 +84,7 @@ lab.experiment('activetasks', () => {
       cli('http://127.0.0.11');
     });
 
-    lab.test('returns active tasks', done => {
+    it('returns active tasks', done => {
       const resp = `[{"node":"node1@127.0.0.1","pid":"<0.8331.5>",
                     "changes_pending":null,"checkpoint_interval":5000,
                     "checkpointed_source_seq":"1234",
@@ -112,12 +104,12 @@ lab.experiment('activetasks', () => {
         .get('/_active_tasks')
         .reply(200, resp);
 
-      console.log = msg => {
+      console.log = consoleMock(msg => {
         if (!/Active/.test(msg)) { return; }
 
         assert.ok(/Active Tasks:/.test(msg));
         done();
-      };
+      });
 
       cli('http://127.0.0.11');
     });
@@ -126,29 +118,26 @@ lab.experiment('activetasks', () => {
 
 
 
-  lab.experiment('getActiveTask', () => {
+  describe('getActiveTask', () => {
 
-    lab.test('rejects for invalid url', done => {
+    it('rejects for invalid url', () => {
 
-      getActiveTask('hhhh')
+      return getActiveTask('hhhh')
         .catch(err => {
           assert.deepEqual(err.type, 'EUSAGE');
-          done();
         });
     });
 
-    lab.test('returns error for bad connections', done => {
+    it('returns error for bad connections', () => {
 
-      getActiveTask('http://127.1.1.10')
+      return getActiveTask('http://127.1.1.10')
       .catch(err => {
-        console.log('ERR', err);
         assert.ok(/Could not connect/.test(err.message));
-        done();
       });
 
     });
 
-    lab.test('returns active tasks info', done => {
+    it('returns active tasks info', () => {
       const resp = `[{"node":"node1@127.0.0.1","pid":"<0.8331.5>",
                     "changes_pending":null,"checkpoint_interval":5000,
                     "checkpointed_source_seq":"1234",
@@ -168,15 +157,14 @@ lab.experiment('activetasks', () => {
         .get('/_active_tasks')
         .reply(200, resp);
 
-      getActiveTask('http://127.0.0.11')
+      return getActiveTask('http://127.0.0.11')
       .then(activetasks => {
         assert.deepEqual(activetasks, JSON.parse(resp));
-        done();
       });
     });
   });
 
-  lab.experiment('filterTasks', () => {
+  describe('filterTasks', () => {
     const tasks = [
       {
         type: 'replication',
@@ -192,24 +180,21 @@ lab.experiment('activetasks', () => {
       },
     ];
 
-    lab.test('for no filter returns', done => {
+    it('for no filter returns', () => {
       const filtered = filterTasks(tasks);
       assert.deepEqual(tasks, filtered);
-      done();
     });
 
-    lab.test('only returns for filtered type', done => {
+    it('only returns for filtered type', () => {
       const filtered = filterTasks(tasks, 'replication');
       assert.deepEqual(filtered.length, 1);
       assert.deepEqual(filtered[0].type, 'replication');
-      done();
     });
 
-    lab.test('returns filter for database', done => {
+    it('returns filter for database', () => {
       const filtered = filterTasks(tasks, 'mydatabase');
       assert.deepEqual(filtered.length, 2);
       assert.deepEqual(filtered[0].target, 'mydatabase');
-      done();
     });
   });
 
