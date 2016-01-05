@@ -1,6 +1,7 @@
 import assert from 'assert';
 
 import { cli } from '../src/replicate-from.js';
+import {mockNodeIsOnline} from './helpers.js';
 
 import * as common from './common.js';
 import nmo from '../src/nmo.js';
@@ -39,7 +40,9 @@ describe('replicate-from', () => {
         'create_target':false
       };
 
-      nock('http://127.0.0.1')
+      const url = 'http://127.0.0.1';
+      mockNodeIsOnline(url)
+      nock(url)
         .post('/_replicator', doc)
         .reply(200, {ok: true, id: '123', rev: '123'});
 

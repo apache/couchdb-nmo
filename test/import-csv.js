@@ -5,6 +5,7 @@ import { createConfigFile } from './common';
 import nmo from '../src/nmo.js';
 import {cli} from '../src/import-csv.js';
 import importcsv from '../src/import-csv.js';
+import {mockNodeIsOnline} from './helpers.js';
 
 const docs = {
   'docs':[
@@ -25,7 +26,6 @@ describe('import csv', () => {
 
   beforeEach(() => {
     return nmo.load({nmoconf: __dirname + '/fixtures/randomini'})
-
   });
 
   describe('cli', () => {
@@ -39,23 +39,32 @@ describe('import csv', () => {
       }
     });
 
-    it('throws error if bad url', (done) => {
+    it('throws error if database name missing', (done) => {
       try {
-        cli('file', 'bad-url');
+        cli('mycluster');
       } catch(e) {
-        assert.ok(/not a valid url/.test(e.message));
+        assert.deepEqual(e.type, 'EUSAGE');
         done();
       }
     });
 
+    it('throws error if bad url', () => {
+      return cli('mycluster', 'dataasename', 'bad-url')
+      .catch(e => {
+        assert.ok(/Cluster does not exist/.test(e.message));
+      });
+    });
+
     it('full integration works', () => {
-      nock('http://127.0.0.1:5984')
+      const url = 'http://127.0.0.1';
+      mockNodeIsOnline(url);
+      nock(url)
         .put('/fake-csv')
         .reply(200)
         .post('/fake-csv/_bulk_docs')
         .reply(200);
 
-      return cli(__dirname + '/fixtures/fake.csv', 'http://127.0.0.1:5984/fake-csv', 'delimiter=','');
+      return cli('clusterone', 'fake-csv', __dirname + '/fixtures/fake.csv', 'delimiter=','');
     });
   });
 
@@ -63,7 +72,9 @@ describe('import csv', () => {
 
     it('reports bad file', () => {
       const url = 'http://127.0.0.1:5984';
-      return importcsv('bad-fake.csv', url + '/csv-upload', {}).catch(function (err) {
+      mockNodeIsOnline(url);
+
+      return importcsv(url, 'csv-upload',  'bad-fake.csv', {}).catch(function (err) {
         assert.ok(/Error reading file -/.test(err));
       });
 
@@ -71,12 +82,12 @@ describe('import csv', () => {
 
     it('logs error for failed request', () => {
       const url = 'http://127.0.0.1:5984';
-
+      mockNodeIsOnline(url);
       nock(url)
         .put('/csv-upload')
         .reply(501);
 
-      return importcsv(__dirname + '/fixtures/fake.csv', url + '/csv-upload', {}).catch(function (err) {
+      return importcsv(url, 'csv-upload', __dirname + '/fixtures/fake.csv', {}).catch(function (err) {
         assert.ok(/CouchDB server answered:/.test(err));
       });
 
@@ -85,13 +96,14 @@ describe('import csv', () => {
     it('Uploads csv file to CouchDB', () => {
       const url = 'http://127.0.0.1:5984';
 
+      mockNodeIsOnline(url);
       nock(url)
         .put('/csv-upload')
         .reply(200)
         .post('/csv-upload/_bulk_docs', docs)
         .reply(200);
 
-      return importcsv(__dirname + '/fixtures/fake.csv', url + '/csv-upload', {delimiter: ',', columns: true})
+      return importcsv(url, 'csv-upload', __dirname + '/fixtures/fake.csv', {delimiter: ',', columns: true})
       .catch(function (err) {
         throw 'error ' + err;
       });

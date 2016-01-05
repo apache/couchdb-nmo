@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {unlinkSync, readFileSync } from 'fs';
+import {mockNodeIsOnline} from './helpers.js';
 
 import savetofile, {cli} from '../src/savetofile.js';
 import nmo from '../src/nmo.js';
@@ -61,6 +62,7 @@ describe('savetofile', () => {
 
     it('get all docs for db', () => {
       const url = 'http://127.0.1.20';
+      mockNodeIsOnline(url);
       nock(url)
         .get('/test-db/_all_docs?include_docs=true')
         .reply(200, []);
@@ -97,6 +99,7 @@ describe('savetofile', () => {
       };
       const url = 'http://127.0.1.20';
 
+      mockNodeIsOnline(url);
       nock(url)
         .get('/test-db/_all_docs?include_docs=true')
         .reply(200, resp);
@@ -138,6 +141,7 @@ describe('savetofile', () => {
       };
       const url = 'http://127.0.1.20';
 
+      mockNodeIsOnline(url);
       nock(url)
         .get('/test-db/_all_docs?include_docs=true')
         .reply(200, resp);
@@ -154,13 +158,5 @@ describe('savetofile', () => {
           });
         });
     });
-
-    it('returns error on failed fetch of data', () => {
-      return savetofile('http://127.0.0.1:5555', 'db', 'the-file')
-      .catch(err => {
-        assert.ok(/ECONNREFUSED/.test(err.message));
-      });
-    });
   });
-
 });

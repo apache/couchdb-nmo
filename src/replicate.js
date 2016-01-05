@@ -1,4 +1,4 @@
-import { sendJsonToNode } from './utils';
+import { sendJsonToNode, checkNodeOnline } from './utils';
 
 
 export function createReplicatorDoc (source, target, options) {
@@ -16,6 +16,9 @@ export function createReplicatorDoc (source, target, options) {
   };
 }
 
-export function replicate (replicatorUrl, doc) {
-  return sendJsonToNode(replicatorUrl, doc);
+export function replicate (clusterUrl, replicatorUrl, doc) {
+  return checkNodeOnline(clusterUrl)
+  .then(() => {
+    return sendJsonToNode(replicatorUrl, doc);
+  });
 }

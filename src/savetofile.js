@@ -4,7 +4,7 @@ import log from 'npmlog';
 import Wreck from 'wreck';
 import Promise from 'bluebird';
 import JSONStream from 'JSONStream';
-import {getUrlFromCluster, validUrl, removeUsernamePw } from './utils';
+import {checkNodeOnline, getUrlFromCluster, validUrl, removeUsernamePw } from './utils';
 import nmo from './nmo.js';
 
 export function cli (url, dbname, file) {
@@ -61,7 +61,8 @@ export function saveResToFile (res, file) {
 export default function savetofile (cluster, dbname, file) {
   return new Promise((resolve, reject) => {
 
-    const url = getUrlFromCluster(cluster) + '/' + dbname + '/_all_docs?include_docs=true';
+    const baseUrl = getUrlFromCluster(cluster);
+    const url =  baseUrl + '/' + dbname + '/_all_docs?include_docs=true';
     const er = validUrl(url);
 
     if (er) {
@@ -71,15 +72,20 @@ export default function savetofile (cluster, dbname, file) {
     const cleanedUrl = removeUsernamePw(url);
     log.http('request', 'GET', cleanedUrl);
 
-    Wreck.request('GET', url, {}, function (err, res) {
-      if (err) {
-        return reject(err);
-      }
+    checkNodeOnline(baseUrl)
+    .then(() => {
+      Wreck.request('GET', url, {}, function (err, res) {
+        if (err) {
+          return reject(err);
+        }
 
-      log.http(res.statusCode, cleanedUrl);
-      saveResToFile(res, file)
-        .then(() => resolve())
-        .catch((err) => {reject(err);});
-    });
+        log.http(res.statusCode, cleanedUrl);
+        saveResToFile(res, file)
+          .then(() => resolve())
+          .catch((err) => reject(err));
+      });
+    })
+    .catch((err) => reject(err));
+
   });
 }

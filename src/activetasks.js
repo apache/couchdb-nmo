@@ -3,7 +3,7 @@ import Wreck from 'wreck';
 import Promise from 'bluebird';
 import log from 'npmlog';
 import prettyjson from 'prettyjson';
-import {getUrlFromCluster, validUrl, removeUsernamePw } from './utils';
+import {getUrlFromCluster, validUrl, removeUsernamePw, checkNodeOnline } from './utils';
 
 export function cli (cluster, filter) {
   return new Promise((resolve, reject) => {
@@ -71,8 +71,7 @@ export function filterTasks (tasks, searchTerm) {
 
 export default function getActiveTask (cluster, filter) {
   return new Promise((resolve, reject) => {
-    // `cluster` argument can be a cluster or a url.
-    // This function checks that and returns an appropriate url
+
     const url = getUrlFromCluster(cluster);
 
     let er = validUrl(url);
@@ -82,26 +81,30 @@ export default function getActiveTask (cluster, filter) {
       return reject(er);
     }
 
-    const activetasksUrl = url + '/_active_tasks';
-    const cleanedUrl = removeUsernamePw(url);
-    log.http('request', 'GET', cleanedUrl);
+    checkNodeOnline(url)
+    .then(() => {
+      const activetasksUrl = url + '/_active_tasks';
+      const cleanedUrl = removeUsernamePw(url);
+      log.http('request', 'GET', cleanedUrl);
 
-    Wreck.get(activetasksUrl, (err, res, payload) => {
-      if (err) {
-        if (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND') {
-          const noNodeErr = new Error('Could not connect to ' + activetasksUrl +
-            ' this could mean the node is down.');
-          noNodeErr.type = 'EUSAGE';
-          return reject(noNodeErr);
+      Wreck.get(activetasksUrl, (err, res, payload) => {
+        if (err) {
+          if (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND') {
+            const noNodeErr = new Error('Could not connect to ' + activetasksUrl +
+              ' this could mean the node is down.');
+            noNodeErr.type = 'EUSAGE';
+            return reject(noNodeErr);
+          }
+
+          err.type = 'EUSAGE';
+          return reject(err);
         }
 
-        err.type = 'EUSAGE';
-        return reject(err);
-      }
-
-      log.http(res.statusCode, cleanedUrl);
-      const tasks = filterTasks(JSON.parse(payload), filter);
-      resolve(tasks);
-    });
+        log.http(res.statusCode, cleanedUrl);
+        const tasks = filterTasks(JSON.parse(payload), filter);
+        resolve(tasks);
+      });
+    })
+    .catch(err => reject(err));
   });
 }

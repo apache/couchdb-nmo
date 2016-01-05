@@ -3,7 +3,8 @@ nmo-import-csv(1) -- Bulk import CSV files
 
 ## SYNOPSIS
 
-    nmo import-csv <file> <couchdb-url> [--delimiter=','] [--columns=true]
+    nmo import-csv <cluster> <database> <file> [--delimiter=','] [--columns=true]
+    nmo import-csv <url> <database> <file> [--delimiter=','] [--columns=true]
 
 ## DESCRIPTION
 
@@ -25,6 +26,10 @@ Imports a csv file into CouchDB.
     each document
 
 
-## EXAMPLE
+EXAMPLE:
 
-    nmo import-csv /path/to/csv http://couch-url --columns=true
+This will import the file `mycsv.csv` into the `mydb` database on the cluster `mycluster`. With the columns parameter set to true.
+    nmo import-csv mycluster mydb mycsv.csv --columns=true
+
+This will import the file `mycsv.csv` into the `mydb` database at the couchdb url `http://mycouchdb.com`.
+    nmo import-csv http://mycouchdb.com mydb mycsv.csv --columns=true

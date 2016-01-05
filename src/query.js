@@ -1,7 +1,7 @@
 import prettyjson from 'prettyjson';
 import nmo from './nmo.js';
 import Promise from 'bluebird';
-import { getUrlFromCluster, sendJsonToNode } from './utils';
+import { checkNodeOnline, getUrlFromCluster, sendJsonToNode } from './utils';
 
 export function cli (cluster, dbname, ...args) {
   return new Promise((resolve, reject) => {
@@ -84,10 +84,15 @@ export function cli (cluster, dbname, ...args) {
 
 export function run (cluster, dbname, selector) {
   return new Promise((resolve, reject) => {
-    const url = getUrlFromCluster(cluster) + '/' + dbname + '/_find';
-    sendJsonToNode(url, selector)
-      .then(res => resolve(res))
-      .catch(err => reject(err));
+    const baseUrl = getUrlFromCluster(cluster);
+    const url = baseUrl + '/' + dbname + '/_find';
+
+    checkNodeOnline(baseUrl)
+    .then(() => {
+      return sendJsonToNode(url, selector)
+    })
+    .then(res => resolve(res))
+    .catch(err => reject(err));
   });
 }
 
@@ -100,9 +105,15 @@ export function createIndex(cluster, dbname, fields) {
       type: 'json'
     };
 
-    const url = getUrlFromCluster(cluster) + '/' + dbname + '/_index';
-    sendJsonToNode(url, index)
-      .then(res => resolve(res))
-      .catch(err => reject(err));
+    const baseUrl = getUrlFromCluster(cluster);
+    const url = baseUrl + '/' + dbname + '/_index';
+
+    checkNodeOnline(baseUrl)
+    .then(() => {
+      return sendJsonToNode(url, index)
+    })
+    .then(res => resolve(res))
+    .catch(err => reject(err));
+
   });
 }

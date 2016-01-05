@@ -1,5 +1,6 @@
 import assert from 'assert';
 import nock from 'nock';
+import {mockNodeIsOnline} from './helpers.js';
 
 import {createReplicatorDoc, replicate} from '../src/replicate.js';
 
@@ -40,22 +41,28 @@ describe('replicate', () => {
         'create_target': true
       };
 
-      nock('http://127.0.0.1')
+      const url = 'http://127.0.0.1';
+
+      mockNodeIsOnline(url);
+      nock(url)
         .post('/_replicator')
         .reply(200, data);
 
-      return replicate('http://127.0.0.1/_replicator', payload)
+      return replicate(url, url + '/_replicator', payload)
       .then(resp => {
         assert.deepEqual(resp, data);
       });
     });
 
     it('returns error on failed replication', () => {
-      nock('http://127.0.0.1')
+      const url = 'http://127.0.0.1';
+
+      mockNodeIsOnline(url);
+      nock(url)
         .post('/_replicator')
         .reply(500, {reason: 'ERROR'});
 
-      return replicate('http://127.0.0.1/_replicator', {})
+      return replicate(url, url + '/_replicator', {})
       .catch(err => {
         assert.deepEqual(err.type, 'EUSAGE');
       });

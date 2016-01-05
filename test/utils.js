@@ -4,6 +4,7 @@ import nock from 'nock';
 import * as utils from '../src/utils.js';
 import * as common from './common.js';
 import nmo from '../src/nmo.js';
+import { mockNodeIsOnline } from './helpers';
 
 const nmoconf = {nmoconf: __dirname + '/fixtures/randomini'};
 common.createConfigFile();
@@ -156,4 +157,28 @@ describe('utils: removeUsernamePw', () => {
     assert.equal(res, 'https://example.com/');
     done();
   });
+});
+
+describe('utils: checkNodeOnline', () => {
+
+  it('resolves for node that is online', () => {
+    const url = 'http://127.0.0.45';
+    mockNodeIsOnline(url);
+    return utils.checkNodeOnline(url)
+    .then(res => {
+      assert.ok(res[url]);
+    });
+
+  });
+
+  it('rejects for node that is offline', () => {
+    const url = 'http://127.0.0.45';
+
+    return utils.checkNodeOnline(url)
+    .catch(err => {
+      assert.ok(/Could not connect/.test(err.message));
+    });
+
+  });
+
 });

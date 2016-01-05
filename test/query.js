@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { consoleMock } from './helpers';
+import { consoleMock, mockNodeIsOnline } from './helpers';
 
 import { cli, run, createIndex } from '../src/query.js';
 
@@ -48,7 +48,9 @@ describe('Mongo Queries', () => {
         type : 'json'
       };
 
-      nock('http://127.0.0.1')
+      const url = 'http://127.0.0.1';
+      mockNodeIsOnline(url)
+      nock(url)
         .post('/mydb/_index', index)
         .reply(200, {result: 'created'});
 
@@ -76,8 +78,10 @@ describe('Mongo Queries', () => {
   describe('run', () => {
     it('requests find run correctly', () => {
       const selector = {selector: {_id: 'one'}};
+      const url = 'http://127.0.0.1';
 
-      nock('http://127.0.0.1')
+      mockNodeIsOnline(url);
+      nock(url)
         .post('/mydb/_find', selector)
         .reply(200, {docs: [{id: 'one', rev: '123'}]});
 
@@ -90,7 +94,9 @@ describe('Mongo Queries', () => {
     it('returns error', () => {
       var selector = {selector: {_id: 'one'}};
 
-      nock('http://127.0.0.1')
+      const url = 'http://127.0.0.1';
+
+      nock(url)
         .post('/mydb/_find', selector)
         .reply(500, {message: 'error'});
 
@@ -110,7 +116,9 @@ describe('Mongo Queries', () => {
         type : 'json'
       };
 
-      nock('http://127.0.0.1')
+      const url = 'http://127.0.0.1';
+      mockNodeIsOnline(url);
+      nock(url)
         .post('/mydb/_index', index)
         .reply(200, {result: 'created'});
 

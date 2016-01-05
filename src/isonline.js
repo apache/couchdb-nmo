@@ -3,7 +3,7 @@ import log from 'npmlog';
 import Wreck from 'wreck';
 import Promise from 'bluebird';
 import nmo from './nmo.js';
-import { getClusterUrls } from './utils';
+import { getClusterUrls, isNodeOnline } from './utils';
 
 
 export const cli = isOnlineCli;
@@ -59,31 +59,5 @@ function isonline (...args) {
 
       resolve(results);
     }, reject);
-  });
-}
-
-function isNodeOnline (url) {
-  return new Promise((resolve, reject) => {
-    const er = utils.validUrl(url);
-
-    if (er) {
-      er.type = 'EUSAGE';
-      return reject(er);
-    }
-    const cleanedUrl = utils.removeUsernamePw(url);
-    log.http('request', 'GET', cleanedUrl);
-
-    Wreck.get(url, (err, res, payload) => {
-      if (err && (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND')) {
-        return resolve({[url]: false});
-      }
-
-      if (err) {
-        return reject(err);
-      }
-
-      log.http(res.statusCode, cleanedUrl);
-      resolve({[url]: res.statusCode < 300});
-    });
   });
 }

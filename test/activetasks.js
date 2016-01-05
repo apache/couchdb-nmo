@@ -4,10 +4,11 @@ import { createConfigFile } from './common';
 
 import nmo from '../src/nmo.js';
 import getActiveTask, { filterTasks, cli }  from '../src/activetasks.js';
-import { consoleMock } from './helpers';
+import { consoleMock, mockNodeIsOnline } from './helpers';
 
 describe('activetasks', () => {
   createConfigFile();
+  const url = 'http://127.0.0.11';
 
   beforeEach(() => {
     return nmo
@@ -24,7 +25,9 @@ describe('activetasks', () => {
     });
 
     it('does json', done => {
-      nock('http://127.0.0.11')
+
+      mockNodeIsOnline(url);
+      nock(url)
         .get('/_active_tasks')
         .reply(200, []);
 
@@ -36,13 +39,13 @@ describe('activetasks', () => {
       nmo
         .load({nmoconf: __dirname + '/fixtures/randomini', json: true})
         .then(() => {
-          cli('http://127.0.0.11');
+          cli(url);
         });
 
     });
 
     it('rejests errors', () => {
-      return cli('http://127.0.0.11')
+      return cli(url)
       .catch(err => {
         assert.ok(err);
       });
@@ -55,21 +58,20 @@ describe('activetasks', () => {
       });
     });
 
-
-
     it('returns no active tasks for filter', done => {
       console.log = consoleMock((msg, log) => {
         assert.ok(/for that filter/.test(msg));
         done();
       });
 
-      nock('http://127.0.0.11')
+      mockNodeIsOnline(url);
+
+      nock(url)
         .get('/_active_tasks')
         .reply(200, []);
 
-      cli('http://127.0.0.11', 'filter');
+      cli(url, 'filter');
     });
-
 
     it('returns no active tasks', done => {
       console.log = consoleMock(function (msg) {
@@ -77,11 +79,13 @@ describe('activetasks', () => {
         done();
       });
 
-      nock('http://127.0.0.11')
+      mockNodeIsOnline(url)
+
+      nock(url)
         .get('/_active_tasks')
         .reply(200, []);
 
-      cli('http://127.0.0.11');
+      cli(url);
     });
 
     it('returns active tasks', done => {
@@ -100,7 +104,8 @@ describe('activetasks', () => {
                     "through_seq":"12313","type":"replication",
                     "updated_on":1444135325,"user":null}]`;
 
-      nock('http://127.0.0.11')
+      mockNodeIsOnline(url);
+      nock(url)
         .get('/_active_tasks')
         .reply(200, resp);
 
@@ -111,12 +116,9 @@ describe('activetasks', () => {
         done();
       });
 
-      cli('http://127.0.0.11');
+      cli(url);
     });
-
   });
-
-
 
   describe('getActiveTask', () => {
 
@@ -153,11 +155,12 @@ describe('activetasks', () => {
                     "through_seq":"12313","type":"replication",
                     "updated_on":1444135325,"user":null}]`;
 
-      nock('http://127.0.0.11')
+      mockNodeIsOnline(url);
+      nock(url)
         .get('/_active_tasks')
         .reply(200, resp);
 
-      return getActiveTask('http://127.0.0.11')
+      return getActiveTask(url)
       .then(activetasks => {
         assert.deepEqual(activetasks, JSON.parse(resp));
       });

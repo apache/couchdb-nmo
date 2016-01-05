@@ -42,7 +42,7 @@ export default function replicateto(cluster, dbname, url) {
       'create_target': !!nmo.config.get('create-target')
     });
 
-    replicate(replicatorUrl, replicator)
+    replicate(clusterUrl, replicatorUrl, replicator)
     .then(resolve)
     .catch(reject);
   });

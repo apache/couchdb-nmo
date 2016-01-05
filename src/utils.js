@@ -90,3 +90,49 @@ export function getClusterUrls (clusterName) {
   }
   return Object.keys(nodes).map(key => nodes[key]);
 }
+
+export function checkNodeOnline (url) {
+  let connectError = new Error('Could not connect to Cluster with url ' + url);
+  connectError.type = 'EUSAGE';
+
+  return new Promise((resolve, reject) => {
+    isNodeOnline(url)
+      .then(res => {
+        if (res[url]) {
+          resolve(res);
+          return;
+        }
+
+        reject(connectError);
+      })
+      .catch(err => {
+        reject(connectError);
+      });
+  });
+}
+
+export function isNodeOnline (url) {
+  return new Promise((resolve, reject) => {
+    const er = validUrl(url);
+
+    if (er) {
+      er.type = 'EUSAGE';
+      return reject(er);
+    }
+    const cleanedUrl = removeUsernamePw(url);
+    log.http('request', 'GET', cleanedUrl);
+
+    Wreck.get(url, (err, res, payload) => {
+      if (err && (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND')) {
+        return resolve({[url]: false});
+      }
+
+      if (err) {
+        return reject(err);
+      }
+
+      log.http(res.statusCode, cleanedUrl);
+      resolve({[url]: res.statusCode < 300});
+    });
+  });
+}
