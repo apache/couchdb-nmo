@@ -132,7 +132,7 @@ describe('activetasks', () => {
 
     it('returns error for bad connections', () => {
 
-      return getActiveTask('http://127.1.1.10')
+      return getActiveTask('http://doesnotexist.invalid')
       .catch(err => {
         assert.ok(/Could not connect/.test(err.message));
       });

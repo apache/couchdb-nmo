@@ -74,9 +74,9 @@ describe('couch-config', () => {
 
     it('getConfig throws error on bad url', () => {
       return getConfig('node1', 'bad-url')
-      .catch(err => {
-        assert.ok(/not a valid url/.test(err.message));
-      });
+        .catch(err => {
+          assert.ok(/not a valid url/.test(err.message));
+        });
     });
 
     it('getConfig throws error on invalid protocol', () => {
@@ -87,7 +87,7 @@ describe('couch-config', () => {
     });
 
     it('gets config bad url returns false', () => {
-      return getConfig('node1', 'http://127.0.0.2/')
+      return getConfig('node1', 'http://badurl.invalid')
         .catch(err => {
           assert.ok(/Could not find node/.test(err.message));
         });
