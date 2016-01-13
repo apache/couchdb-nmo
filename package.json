@@ -11,6 +11,9 @@
     "lint": "eslint ./src ./test ./bin"
   },
   "author": "Robert Kowalski <rok@kowalski.gd>",
+  "contributors": [
+    "Garren Smith <garren@apache.org>"
+  ],
   "license": "Apache 2.0",
   "bugs": {
     "url": "https://github.com/robertkowalski/nmo/issues"
@@ -45,8 +48,8 @@
   "devDependencies": {
     "babel": "^6.1.18",
     "babel-cli": "^6.2.0",
-    "babel-eslint": "^4.1.5",
     "babel-polyfill": "^6.2.0",
+    "babel-eslint": "^4.1.5",
     "eslint": "^1.9.0",
     "less": "~2.5.0",
     "marked-man": "~0.1.4",
