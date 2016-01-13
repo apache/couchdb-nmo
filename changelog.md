@@ -1,3 +1,12 @@
+# 1.2.0
+
+  * Import collection from MongoDB
+  * Create and query Mango indexes
+  * Replicate to and from a cluster
+  * Save a database to file
+
+## New Features:
+
 # 1.1.0
 
 ## New Features:
