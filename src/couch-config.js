@@ -59,7 +59,7 @@ export function get (cluster, nodes, section) {
 
     Object.keys(nodeConfigs).forEach(node => {
       var msg = [
-        'NODE:',
+        'NODE ' + node + ':',
         prettyjson.render(nodeConfigs[node], {})
       ].join('\n');
       console.log(msg);

@@ -4,7 +4,7 @@ nmo-savetofile(1) -- save database to file
 ## SYNOPSIS
 
     nmo savetofile cluster database file [--compress]
-    nmo activetasks url database file [--compress]
+    nmo savetofile url database file [--compress]
 
 
 ## DESCRIPTION

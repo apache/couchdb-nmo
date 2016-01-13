@@ -14,8 +14,8 @@ export function cli (url, dbname, file) {
       const msg = [
         'Usage:',
         '',
-        'nmo activetasks <cluster> <database name> <file> ',
-        'nmo activetasks <url> <database name> <file>'
+        'nmo savetofile <cluster> <database name> <file> ',
+        'nmo savetofile <url> <database name> <file>'
       ].join('\n');
 
       const err = new Error(msg);
