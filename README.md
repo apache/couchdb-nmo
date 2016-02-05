@@ -2,8 +2,6 @@
 
 `nmo` is a cli tool to manage CouchDB clusters and nodes.
 
-Requires [node](https://nodejs.org) >= 4.0.
-
 ## Installation
 
 ```
