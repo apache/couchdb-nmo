@@ -1,6 +1,6 @@
 {
   "name": "nmo",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A tool to manage your CouchDB cluster",
   "main": "lib/nmo.js",
   "bin": "bin/nmo-cli.js",
