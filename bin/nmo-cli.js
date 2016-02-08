@@ -6,6 +6,7 @@ var xtend = require('xtend');
 var pkg = require('../package.json');
 var osenv = require('osenv');
 var fs = require('fs');
+var path = require('path');
 
 var nmo = require('../lib/nmo.js').default;
 var parsed = nopt({
@@ -19,6 +20,8 @@ var cmd = parsed.argv.remain.shift();
 var home = osenv.home();
 
 parsed.nmoconf = home + '/' + '.nmorc';
+parsed.cliroot = path.resolve(__dirname, '..');
+parsed.name = pkg.name;
 
 if (!fs.existsSync(parsed.nmoconf)) {
   fs.writeFileSync(parsed.nmoconf, '');

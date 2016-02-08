@@ -24,13 +24,15 @@ export default help;
 export const cli = helpCli;
 function helpCli (cmd) {
   return new Promise((resolve, reject) => {
+    const name = nmo.config.get('name');
+    const helpDir = nmo.config.get('cliroot');
 
     if (!cmd || !nmo.commands[cmd]) {
       help();
       return resolve();
     }
 
-    const path = `${__dirname}/../man/man1/nmo-${cmd}.1`;
+    const path = `${helpDir}/man/man1/${name}-${cmd}.1`;
     const child = spawn('man', [path], {stdio: 'inherit'});
     resolve(child);
   });
