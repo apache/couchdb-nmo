@@ -1,3 +1,6 @@
+# 1.2.2
+  * Internal fixes for help path
+
 # 1.2.0
 
   * Import collection from MongoDB
